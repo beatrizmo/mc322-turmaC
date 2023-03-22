@@ -46,4 +46,8 @@ public class Seguradora {
 	public void setEndereco(String endereco) {
 		this.endereco = endereco;
 	}
+	
+	public String toString() {
+		return "*Dados da Seguradora*\nNome: " + getNome() + "\nTelefone: " + getTelefone() + "\nEmail: " + getEmail() + "\nEndereco: " + getEndereco();
+	}
 }

@@ -1,12 +1,15 @@
 package lab;
 
+import java.util.Random;
+
 public class Sinistro {
 	private int id;
 	private String data;
 	private String endereco;
 	
-	public Sinistro(int id, String data, String endereco) {
-		this.id = id;
+	public Sinistro(String data, String endereco) {
+		Random random =  new Random();
+		this.id = Math.abs(random.nextInt());
 		this.data = data;
 		this.endereco = endereco;		
 	}
@@ -14,10 +17,6 @@ public class Sinistro {
 	//Getters e setters
 	public int getID() {
 		return id;
-	}
-	
-	public void setID(int id) {
-		this.id = id;
 	}
 	
 	public String getData() {
@@ -34,5 +33,10 @@ public class Sinistro {
 	
 	public void setEndereco(String endereco) {
 		this.endereco = endereco;
-	}		
+	}	
+	
+	public String toString() {
+		String s = "*Dados do Sinistro*\nID: " + getID() + "\nData: " + getData() + "\nEndereco: " + getEndereco();
+		return s;
+	}
 }
