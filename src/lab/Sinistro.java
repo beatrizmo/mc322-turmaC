@@ -7,9 +7,9 @@ public class Sinistro {
 	private String data;
 	private String endereco;
 	
+	//Construtor	
 	public Sinistro(String data, String endereco) {
-		Random random =  new Random();
-		this.id = Math.abs(random.nextInt());
+		this.id = gerarRandom();
 		this.data = data;
 		this.endereco = endereco;		
 	}
@@ -38,5 +38,11 @@ public class Sinistro {
 	public String toString() {
 		String s = "*Dados do Sinistro*\nID: " + getID() + "\nData: " + getData() + "\nEndereco: " + getEndereco();
 		return s;
+	}
+	
+	//Função gerar id aleatório	
+	public int gerarRandom() {
+		Random random =  new Random();
+		return Math.abs(random.nextInt());
 	}
 }
