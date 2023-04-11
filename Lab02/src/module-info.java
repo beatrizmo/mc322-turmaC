@@ -5,5 +5,5 @@
  * @author biamo
  *
  */
-module lab {
+module Lab02 {
 }
