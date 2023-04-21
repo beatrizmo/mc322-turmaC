@@ -57,28 +57,68 @@ public class Seguradora {
 		return this.listaClientes.add(cliente);
 		
 	}
+
+	
 	
 	public boolean removerCliente(String cliente) {
-		for (int i=0; i< this.listaClientes.size(); i++) {
-			if (this.listaClientes.get(i).getNome() == cliente) {
-				return this.listaClientes.remove(this.listaClientes.get(i));
+		String identificador = "";
+		for (Cliente clienteAtual : listaClientes) {
+			
+			if (clienteAtual instanceof ClientePF) {
+				ClientePF pf = (ClientePF) clienteAtual;
+				identificador = pf.getCPF();
+				
 			}
+			if (clienteAtual instanceof ClientePJ) {
+				ClientePJ pj = (ClientePJ) clienteAtual;
+				identificador = pj.getCNPJ();
+			}
+			if (identificador == cliente) {
+				listaClientes.remove(clienteAtual);
+				System.out.println("Removido!");
+				return true;
+			}			
 		}
 		return false;
 	}
 	
-	public void listarClientes() {
-		for (int i=0; i < this.listaClientes.size(); i++) {
-			System.out.println(this.listaClientes.toString());
+	public void listarClientes(String tipoCliente) {
+		for (Cliente clienteAtual : listaClientes) {
+			
+			if ((clienteAtual instanceof ClientePF) && tipoCliente == "CPF") {
+				System.out.println(clienteAtual.toString());
+				
+			}
+			if (clienteAtual instanceof ClientePJ && tipoCliente == "CNPJ") {
+				System.out.println(clienteAtual.toString());
+			}		
 		}
 	}
-	
-	
-	public boolean gerarSinistro() {
 		
-	}
+	/*public boolean gerarSinistro() {
+		
+	}*/
 	
 	public boolean visualisarSinistro(String cliente) {
+		String identificador = "";
+		for (Sinistro sinistroAtual : listaSinistros) {
+			Cliente clienteAtual = sinistroAtual.getCliente();
+			
+			if (clienteAtual instanceof ClientePF) {
+				ClientePF pf = (ClientePF) clienteAtual;
+				identificador = pf.getCPF();
+				
+			}
+			if (clienteAtual instanceof ClientePJ) {
+				ClientePJ pj = (ClientePJ) clienteAtual;
+				identificador = pj.getCNPJ();
+			}
+			if (identificador == cliente) {
+				System.out.println(sinistroAtual);
+				return true;
+			}			
+		}
+		return false;
 		
 	}
 	
@@ -88,12 +128,12 @@ public class Seguradora {
 		}
 	}
 	
+	
 	public String toString() {
 		return "Seguradora [nome=" + nome + ", telefone=" + telefone + ", email=" + email + ", endereco=" + endereco
 				+ ", listaSinistros=" + listaSinistros + ", listaClientes=" + listaClientes + "]";
 	}
 	
-	
-	
+	//gerar sinistro?
 	
 }
