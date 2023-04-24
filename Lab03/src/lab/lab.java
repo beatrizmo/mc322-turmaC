@@ -101,22 +101,22 @@ public class lab {
 		System.out.println("Remoção do ClientePF (pessoa2):");
 		seg.removerCliente("453.178.287-91");		
 		seg.listarClientes("CPF");
-		seg.listarClientes("CNPJ");
-		System.out.println("-------######-------");
+		seg.listarClientes("CNPJ");		
 		
-		//Menu de visualização da Seguradora
-		System.out.println("MENU DE VISUALIZAÇÃO DA SUGURADORA");
-		System.out.println("Digite o determinado número para visualizar as informações listadas:");
-		System.out.println("1- Nome da Seguradora");
-		System.out.println("2- Telefone da Seguradora");
-		System.out.println("3- Email da Seguradora");
-		System.out.println("4- Endereço da Seguradora");
-		System.out.println("5- Lista de Clientes Físicos na Seguradora");
-		System.out.println("6- Lista de Clientes Jurídicos na Seguradora");
-		System.out.println("7- Lista de Sinistros na Seguradora");
-		System.out.println("8- Sair");	
-		
+		//Menu de visualização da Seguradora		
 		while(true) {
+			System.out.println("-------######-------");
+			System.out.println("MENU DE VISUALIZAÇÃO DA SUGURADORA");
+			System.out.println("Digite o determinado número para visualizar as informações listadas:");
+			System.out.println("1- Nome da Seguradora");
+			System.out.println("2- Telefone da Seguradora");
+			System.out.println("3- Email da Seguradora");
+			System.out.println("4- Endereço da Seguradora");
+			System.out.println("5- Lista de Clientes Físicos na Seguradora");
+			System.out.println("6- Lista de Clientes Jurídicos na Seguradora");
+			System.out.println("7- Lista de Sinistros na Seguradora");
+			System.out.println("8- Sair");
+			System.out.println("-------######-------");
 			Scanner entrada = new Scanner(System.in);
 			int op = entrada.nextInt();
 			if (op == 1) {
@@ -145,6 +145,7 @@ public class lab {
 			}
 			else if (op == 8) {
 				System.out.println("Menu fechado.");
+				System.out.println("-------######-------");
 				entrada.close();
 				break;
 			}
