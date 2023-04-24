@@ -56,9 +56,7 @@ public class Seguradora {
 	public boolean cadastrarCliente(Cliente cliente) {
 		return this.listaClientes.add(cliente);
 		
-	}
-
-	
+	}	
 	
 	public boolean removerCliente(String cliente) {
 		String identificador = "";
@@ -94,10 +92,6 @@ public class Seguradora {
 			}		
 		}
 	}
-		
-	/*public boolean gerarSinistro() {
-		
-	}*/
 	
 	public boolean visualisarSinistro(String cliente) {
 		String identificador = "";
@@ -123,9 +117,13 @@ public class Seguradora {
 	}
 	
 	public void listarSinistros() {
-		for (int i=0; i < this.listaSinistros.size(); i++) {
-			System.out.println(this.listaSinistros.toString());
-		}
+		System.out.println(listaSinistros);
+	}
+	
+	
+	public boolean gerarSinistro(String data, Cliente cliente, Veiculo veiculo, Seguradora seguradora) {
+		Sinistro sin = new Sinistro(data, cliente.getEndereco(), cliente, veiculo, seguradora);
+		return this.listaSinistros.add(sin);
 	}
 	
 	
@@ -134,6 +132,6 @@ public class Seguradora {
 				+ ", listaSinistros=" + listaSinistros + ", listaClientes=" + listaClientes + "]";
 	}
 	
-	//gerar sinistro?
+	
 	
 }

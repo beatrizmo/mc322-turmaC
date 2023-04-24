@@ -84,7 +84,7 @@ public class ClientePJ extends Cliente{
 
 	@Override
 	public String toString() {
-		return "ClientePJ [CNPJ=" + CNPJ + ", dataFundacao=" + dataFundacao + "]";
+		return "ClientePJ [CNPJ=" + CNPJ + ", dataFundacao=" + dataFundacao + super.toString();
 	}
 
 	

@@ -33,13 +33,18 @@ public class Cliente {
 	}
 
 	public String toString() {
-		return "Cliente [nome=" + nome + ", endereco=" + endereco + "]";
+		return ", nome=" + nome + ", endereco=" + endereco + ", listaVeiculos=" + listaVeiculos + "]";
 	}
 
 	public ArrayList<Veiculo> getListaVeiculos() {
 		return listaVeiculos;
+	}
+
+	public boolean adicionarVeiculo(Veiculo veiculo) {
+		return this.listaVeiculos.add(veiculo);
 	}	
 	
-	//adicionar veiculo?
+	
+	
 	
 }

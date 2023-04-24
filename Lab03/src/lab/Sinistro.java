@@ -66,8 +66,8 @@ public class Sinistro {
 	}
 
 	public String toString() {
-		return "Sinistro [id=" + id + ", data=" + data + ", endereco=" + endereco + ", seguradora=" + seguradora
-				+ ", veiculo=" + veiculo + ", cliente=" + cliente + "]";
+		return "Sinistro [id=" + id + ", data=" + data + ", endereco=" + endereco + ", seguradora=" + seguradora.getNome()
+				+ ", veiculo=" + veiculo.getPlaca() + ", cliente=" + cliente.getNome() + "]";
 	}
 	
 	//Função gerar id aleatório	

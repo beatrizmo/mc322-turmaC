@@ -127,8 +127,9 @@ public class ClientePF extends Cliente{
 	@Override
 	public String toString() {
 		return "ClientePF [CPF=" + CPF + ", genero=" + genero + ", dataLicenca=" + dataLicenca + ", educacao="
-				+ educacao + ", dataNascimento=" + dataNascimento + ", classeEconomica=" + classeEconomica + "]";
+				+ educacao + ", dataNascimento=" + dataNascimento + ", classeEconomica=" + classeEconomica + super.toString();
 	}
+	
 	
 	
 }
