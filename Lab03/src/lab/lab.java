@@ -88,6 +88,8 @@ public class lab {
 		System.out.println("Lista de Sinistros:");
 		seg.gerarSinistro("20/04/2023", empresa, moto, seg);
 		seg.gerarSinistro("19/07/2022", pessoa, carro, seg);
+		seg.gerarSinistro("18/09/2020", pessoa, carro, seg);	
+		seg.gerarSinistro("30/01/2018", pessoa2, patinete, seg);
 		seg.listarSinistros();
 		System.out.println("-------######-------");
 		
@@ -98,15 +100,19 @@ public class lab {
 		System.out.println("-------######-------");
 		
 		//Remover ClientePF da Seguradora
-		System.out.println("Remoção do ClientePF (pessoa2):");
-		seg.removerCliente("453.178.287-91");		
+		System.out.println("Remoção do ClientePF (pessoa):");
+		seg.removerCliente("070.680.938-68");		
 		seg.listarClientes("CPF");
-		seg.listarClientes("CNPJ");		
+		seg.listarClientes("CNPJ");
+		System.out.println("-------######-------");
+		System.out.println("Lista de Sinistros após remoção do cliente:");
+		seg.listarSinistros();
 		
-		//Menu de visualização da Seguradora		
+		//Menu de visualização da Seguradora	
+		Scanner entrada = new Scanner(System.in);
 		while(true) {
 			System.out.println("-------######-------");
-			System.out.println("MENU DE VISUALIZAÇÃO DA SUGURADORA");
+			System.out.println("MENU DE VISUALIZAÇÃO DA SEGURADORA");
 			System.out.println("Digite o determinado número para visualizar as informações listadas:");
 			System.out.println("1- Nome da Seguradora");
 			System.out.println("2- Telefone da Seguradora");
@@ -116,8 +122,8 @@ public class lab {
 			System.out.println("6- Lista de Clientes Jurídicos na Seguradora");
 			System.out.println("7- Lista de Sinistros na Seguradora");
 			System.out.println("8- Sair");
-			System.out.println("-------######-------");
-			Scanner entrada = new Scanner(System.in);
+			System.out.println("-------######-------");			
+			
 			int op = entrada.nextInt();
 			if (op == 1) {
 				System.out.println("Nome: " + seg.getNome());
@@ -146,10 +152,11 @@ public class lab {
 			else if (op == 8) {
 				System.out.println("Menu fechado.");
 				System.out.println("-------######-------");
-				entrada.close();
+				
 				break;
 			}
 		} 
+		entrada.close();
 				
 	}
 

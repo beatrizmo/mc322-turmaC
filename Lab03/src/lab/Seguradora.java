@@ -73,19 +73,44 @@ public class Seguradora {
 			}
 			if (identificador == cliente) {
 				listaClientes.remove(clienteAtual);
-				System.out.println("Removido!");
+				System.out.println("Removido da lista de clientes!");
+				this.removerSinistro(cliente);
 				return true;
 			}			
 		}
 		return false;
 	}
 	
-	public void listarClientes(String tipoCliente) {
-		for (Cliente clienteAtual : listaClientes) {
+	public void removerSinistro(String cliente) {
+		String identificador = "";		
+		ArrayList<Sinistro> listaReserva = new ArrayList<Sinistro>();
+		
+		for (Sinistro sinistroAtual : listaSinistros) {
+			Cliente clienteAtual = sinistroAtual.getCliente();
 			
+			if (clienteAtual instanceof ClientePF) {
+				ClientePF pf = (ClientePF) clienteAtual;
+				identificador = pf.getCPF();				
+			}
+			if (clienteAtual instanceof ClientePJ) {
+				ClientePJ pj = (ClientePJ) clienteAtual;
+				identificador = pj.getCNPJ();
+			}
+			if (identificador == cliente) {
+				listaReserva.add(sinistroAtual);
+				System.out.println("Removido da lista de sinistros!");
+			}			
+		}
+		
+		for (Sinistro sinistroAtual : listaReserva) {
+			listaSinistros.remove(sinistroAtual);
+		}
+	}
+	
+	public void listarClientes(String tipoCliente) {
+		for (Cliente clienteAtual : listaClientes) {			
 			if ((clienteAtual instanceof ClientePF) && tipoCliente == "CPF") {
-				System.out.println(clienteAtual.toString());
-				
+				System.out.println(clienteAtual.toString());				
 			}
 			if (clienteAtual instanceof ClientePJ && tipoCliente == "CNPJ") {
 				System.out.println(clienteAtual.toString());
@@ -95,6 +120,7 @@ public class Seguradora {
 	
 	public boolean visualisarSinistro(String cliente) {
 		String identificador = "";
+		int cont = 0;
 		for (Sinistro sinistroAtual : listaSinistros) {
 			Cliente clienteAtual = sinistroAtual.getCliente();
 			
@@ -103,17 +129,16 @@ public class Seguradora {
 				identificador = pf.getCPF();
 				
 			}
-			if (clienteAtual instanceof ClientePJ) {
+			else if (clienteAtual instanceof ClientePJ) {
 				ClientePJ pj = (ClientePJ) clienteAtual;
 				identificador = pj.getCNPJ();
 			}
 			if (identificador == cliente) {
 				System.out.println(sinistroAtual);
-				return true;
+				cont++;
 			}			
 		}
-		return false;
-		
+		return cont > 0;
 	}
 	
 	public void listarSinistros() {
