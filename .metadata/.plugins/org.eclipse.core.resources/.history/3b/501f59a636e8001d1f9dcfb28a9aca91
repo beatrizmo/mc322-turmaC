@@ -1,9 +1,0 @@
-package lab;
-
-public enum CalcSeguro {
-	ABC,
-	DEF,
-	GHI;
-	
-	public final int operacao = 0;
-}
