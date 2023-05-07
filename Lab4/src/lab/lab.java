@@ -2,6 +2,8 @@ package lab;
 import java.util.Date;
 import java.util.Scanner;
 
+
+
 public class lab {
 
 	public static void main(String[] args) {
@@ -109,6 +111,7 @@ public class lab {
 		System.out.println("Lista de Sinistros após remoção do cliente:");
 		seg.listarSinistros();
 		
+		/*
 		//Menu de visualização da Seguradora	
 		Scanner entrada = new Scanner(System.in);
 		while(true) {
@@ -158,6 +161,9 @@ public class lab {
 			}
 		} 
 		entrada.close();
+		*/
+		
+		
 		
 	}
 	

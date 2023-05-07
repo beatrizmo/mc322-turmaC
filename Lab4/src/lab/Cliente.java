@@ -44,6 +44,10 @@ public class Cliente {
 	public boolean adicionarVeiculo(Veiculo veiculo) {
 		return this.listaVeiculos.add(veiculo);
 	}
+	
+	public boolean removerVeiculo(Veiculo veiculo) {
+		return this.listaVeiculos.remove(veiculo);
+	}
 
 	public double getValorSeguro() {
 		return valorSeguro;
@@ -53,7 +57,9 @@ public class Cliente {
 		this.valorSeguro = valorSeguro;
 	}	
 	
-	public double calculaScore() {return 1;};
+	public double calculaScore() {
+		return 1;
+	};
 	
 	
 }

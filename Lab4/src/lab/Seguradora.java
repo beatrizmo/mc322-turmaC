@@ -176,6 +176,28 @@ public class Seguradora {
 		return soma;
 	}
 	
+	public void transferenciaSeguro(Cliente fonte, Cliente alvo) {
+		for(Sinistro sinistro : this.listaSinistros) {
+			
+			if(sinistro.getCliente() == fonte) {
+				
+				//ALTERA A POSSE
+				fonte.removerVeiculo(sinistro.getVeiculo());
+				alvo.adicionarVeiculo(sinistro.getVeiculo());
+				//ALTERAR SINISTRO
+				sinistro.setCliente(alvo);
+				//NOVO CALCULO DE SEGUROS
+				System.out.println("Novo score do cliente fonte:");
+				System.out.println(fonte.calculaScore());
+				System.out.println("Novo score do cliente alvo:");
+				System.out.println(alvo.calculaScore());
+			}
+			
+		}
+		
+		
+	}
+	
 	public String toString() {
 		return "Seguradora [nome=" + nome + ", telefone=" + telefone + ", email=" + email + ", endereco=" + endereco
 				+ ", listaSinistros=" + listaSinistros + ", listaClientes=" + listaClientes + "]";
