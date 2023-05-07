@@ -141,6 +141,17 @@ public class Seguradora {
 		return cont > 0;
 	}
 	
+	public int contarSinistroCliente(Cliente cliente) {
+		int cont = 0;
+		for (Sinistro sinistroAtual : listaSinistros) {
+			Cliente clienteAtual = sinistroAtual.getCliente();			
+			if (clienteAtual == cliente) {
+				cont++;
+			}						
+		}
+		return cont;
+	}
+	
 	public void listarSinistros() {
 		System.out.println(listaSinistros);
 	}
@@ -151,12 +162,18 @@ public class Seguradora {
 		return this.listaSinistros.add(sin);
 	}
 	
-	public double calcularPrecoSeguroCliente() {
-		
+	public double calcularPrecoSeguroCliente(Cliente cliente) {
+		double score = cliente.calculaScore();
+		int qntSinistros = this.contarSinistroCliente(cliente);
+		return score * (1 + qntSinistros);
 	}
 	
 	public double calcularReceita() {
-		
+		double soma = 0.0;
+		for (Cliente clienteAtual : listaClientes) { 
+			soma += this.calcularPrecoSeguroCliente(clienteAtual);
+		}
+		return soma;
 	}
 	
 	public String toString() {

@@ -42,8 +42,9 @@ public class ClientePJ extends Cliente{
 		this.dataFundacao = dataFundacao;
 	}
 	
+	@Override
 	public double calculaScore() {
-		
+		return CalcSeguro.VALOR_BASE.valor() * (1 + (this.qtdeFuncionarios)/100) * this.getListaVeiculos().size();
 	}
 	
 	@Override

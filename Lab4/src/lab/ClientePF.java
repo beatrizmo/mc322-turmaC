@@ -72,8 +72,20 @@ public class ClientePF extends Cliente{
 		this.classeEconomica = classeEconomica;
 	}
 	
+	public int calcularIdade() {
+	    long diferencaMillis = new Date().getTime() - this.dataNascimento.getTime();
+	    long diferencaAnos = (long) (diferencaMillis / 1000 / 60 / 60 / 24 / 365.25);
+	    return (int) diferencaAnos;
+	}
+	
+	@Override
 	public double calculaScore() {
-		CalcSeguro.VALOR_BASE.valor() * 
+		int idade = calcularIdade();
+		double fatorIdade = 1;
+		if(idade >= 18 && idade <= 30 ) {fatorIdade = CalcSeguro.FATOR_18_30.valor();}
+		else if(idade >= 30 && idade <=60) {fatorIdade = CalcSeguro.FATOR_30_60.valor();}
+		else if(idade >=60 && idade <= 90) {fatorIdade = CalcSeguro.FATOR_60_90.valor();}
+		return CalcSeguro.VALOR_BASE.valor() *  fatorIdade * this.getListaVeiculos().size();
 	}
 
 	@Override

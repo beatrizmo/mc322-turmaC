@@ -53,5 +53,7 @@ public class Cliente {
 		this.valorSeguro = valorSeguro;
 	}	
 	
+	public double calculaScore() {return 1;};
+	
 	
 }

@@ -21,7 +21,7 @@ public class lab {
 		System.out.println("-------######-------");
 		
 		ClientePJ empresa = new ClientePJ("Cereais Ltda", "Bosque Agua Branca" , 
-				"56.419.013/0001-54", then);
+				"56.419.013/0001-54", then, 5);
 		System.out.println("Criação de " + empresa.toString());
 		System.out.println("-------######-------");
 		
