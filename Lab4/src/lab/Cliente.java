@@ -45,8 +45,14 @@ public class Cliente {
 		return this.listaVeiculos.add(veiculo);
 	}
 	
-	public boolean removerVeiculo(Veiculo veiculo) {
-		return this.listaVeiculos.remove(veiculo);
+	public boolean removerVeiculo(String placaVeiculo) {
+		for(Veiculo veiculo : this.listaVeiculos) {			
+			if(veiculo.getPlaca() == placaVeiculo) {
+				System.out.println("Veículo removido de cliente!");
+				return this.listaVeiculos.remove(veiculo); 				
+			}
+		}
+		return false;
 	}
 
 	public double getValorSeguro() {

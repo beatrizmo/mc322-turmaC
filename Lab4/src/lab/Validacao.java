@@ -70,7 +70,6 @@ public class Validacao {
 			}
 		}
 		if (iguais == 0) {
-			System.out.println("@");
 			return false;
 		}
 		
@@ -94,11 +93,9 @@ public class Validacao {
 				
 		//verificar se os dígitos calculados são iguais aos informados
 		if (primeiroVerificador != Character.getNumericValue(newCPF.charAt(9))) {
-			System.out.println("Primeiro digito verificador não é valido");
 			return false;
 		}
 		if (segundoVerificador != Character.getNumericValue(newCPF.charAt(10))) {
-			System.out.println("Segundo digito verificador não é valido");
 			return false;
 		}
 		

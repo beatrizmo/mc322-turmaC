@@ -55,29 +55,31 @@ public class Seguradora {
 	
 	public boolean cadastrarCliente(Cliente cliente) {
 		return this.listaClientes.add(cliente);
-		
 	}	
 	
 	public boolean removerCliente(String cliente) {
 		String identificador = "";
 		for (Cliente clienteAtual : listaClientes) {
 			
+			
 			if (clienteAtual instanceof ClientePF) {
 				ClientePF pf = (ClientePF) clienteAtual;
 				identificador = pf.getCPF();
+				
 				
 			}
 			if (clienteAtual instanceof ClientePJ) {
 				ClientePJ pj = (ClientePJ) clienteAtual;
 				identificador = pj.getCNPJ();
 			}
-			if (identificador == cliente) {
+			if (identificador.equals(cliente)) {
 				listaClientes.remove(clienteAtual);
 				System.out.println("Removido da lista de clientes!");
 				this.removerSinistro(cliente);
 				return true;
 			}			
 		}
+		System.out.println("Não foi encontrado o cliente" + cliente);
 		return false;
 	}
 	
@@ -96,7 +98,7 @@ public class Seguradora {
 				ClientePJ pj = (ClientePJ) clienteAtual;
 				identificador = pj.getCNPJ();
 			}
-			if (identificador == cliente) {
+			if (identificador.equals(cliente)) {
 				listaReserva.add(sinistroAtual);
 				System.out.println("Removido da lista de sinistros!");
 			}			
@@ -133,10 +135,13 @@ public class Seguradora {
 				ClientePJ pj = (ClientePJ) clienteAtual;
 				identificador = pj.getCNPJ();
 			}
-			if (identificador == cliente) {
+			if (identificador.equals(cliente)) {
 				System.out.println(sinistroAtual);
 				cont++;
 			}			
+		}
+		if (cont == 0) {
+			System.out.println("Nao existem sinistros nesse CPF/CNPJ");
 		}
 		return cont > 0;
 	}
@@ -153,9 +158,22 @@ public class Seguradora {
 	}
 	
 	public void listarSinistros() {
-		System.out.println(listaSinistros);
+		int cont = 0;
+		for (Sinistro sinistroAtual : listaSinistros) {
+			System.out.println(sinistroAtual.toString());
+		}
+		if (cont == 0) {
+			System.out.println("Não existem Sinistros nessa seguradora!");
+		}
 	}
 	
+	public void listarVeiculos() {
+		int cont = 0;
+		for (Sinistro sinistroAtual : listaSinistros) {
+			System.out.println(sinistroAtual.getVeiculo());
+		}
+		if (cont == 0) {System.out.println("Não existem veículos nessa seguradora!");}
+	}
 	
 	public boolean gerarSinistro(String data, Cliente cliente, Veiculo veiculo, Seguradora seguradora) {
 		Sinistro sin = new Sinistro(data, cliente.getEndereco(), cliente, veiculo, seguradora);
@@ -182,20 +200,39 @@ public class Seguradora {
 			if(sinistro.getCliente() == fonte) {
 				
 				//ALTERA A POSSE
-				fonte.removerVeiculo(sinistro.getVeiculo());
+				fonte.removerVeiculo(sinistro.getVeiculo().getPlaca());
 				alvo.adicionarVeiculo(sinistro.getVeiculo());
 				//ALTERAR SINISTRO
 				sinistro.setCliente(alvo);
-				//NOVO CALCULO DE SEGUROS
-				System.out.println("Novo score do cliente fonte:");
-				System.out.println(fonte.calculaScore());
-				System.out.println("Novo score do cliente alvo:");
-				System.out.println(alvo.calculaScore());
 			}
 			
 		}
+		//NOVO CALCULO DE SEGUROS
+		System.out.println("Novo score do cliente fonte:");
+		System.out.println(fonte.calculaScore());
+		System.out.println("Novo score do cliente alvo:");
+		System.out.println(alvo.calculaScore());
 		
 		
+	}
+	
+	public boolean removerVeiculoSeguradora(String placaVeiculo) {
+		for(Sinistro sinistro : this.listaSinistros) {			
+			if(sinistro.getVeiculo().getPlaca().equals(placaVeiculo)) { //quando se remove um veiculo, se remove o sinistro ligado a ele
+				Cliente cliente = sinistro.getCliente();
+				if (cliente instanceof ClientePF) {
+					ClientePF pf = (ClientePF) cliente;
+					this.removerSinistro(pf.getCPF());
+				}
+				if (cliente instanceof ClientePJ) {
+					ClientePJ pj = (ClientePJ) cliente;
+					this.removerSinistro(pj.getCNPJ());					
+				}
+				System.out.println("Veiculo removido da Seguradora!");
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public String toString() {
