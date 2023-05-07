@@ -1,0 +1,5 @@
+INDEX VERSION 1.131+C:\Users\biamo\Unicamp\mc322\mc322_1s2023\.metadata\.plugins\org.eclipse.jdt.core
+4291953834.index
+3580456661.index
+197218270.index
+1865797976.index
