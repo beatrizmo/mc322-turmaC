@@ -13,7 +13,7 @@ public class Cliente {
 		this.nome = nome;
 		this.endereco = endereco;
 		this.listaVeiculos = new ArrayList<Veiculo>();
-		
+		this.valorSeguro = calculaScore();
 	}
 	
 	//Getters e setters
@@ -57,12 +57,12 @@ public class Cliente {
 
 	public double getValorSeguro() {
 		return valorSeguro;
-	}
-
-	public void setValorSeguro(double valorSeguro) {
-		this.valorSeguro = valorSeguro;
 	}	
 	
+	public void setValorSeguro(double valorSeguro) {
+		this.valorSeguro = valorSeguro;
+	}
+
 	public double calculaScore() {
 		return 1;
 	};

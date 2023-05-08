@@ -54,6 +54,7 @@ public class Seguradora {
 	}
 	
 	public boolean cadastrarCliente(Cliente cliente) {
+		System.out.println("Valor do Seguro: " + this.calcularPrecoSeguroCliente(cliente));
 		return this.listaClientes.add(cliente);
 	}	
 	
@@ -183,7 +184,9 @@ public class Seguradora {
 	public double calcularPrecoSeguroCliente(Cliente cliente) {
 		double score = cliente.calculaScore();
 		int qntSinistros = this.contarSinistroCliente(cliente);
-		return score * (1 + qntSinistros);
+		double valorSeguro = score * (1 + qntSinistros);
+		cliente.setValorSeguro(valorSeguro);
+		return valorSeguro;
 	}
 	
 	public double calcularReceita() {
@@ -204,14 +207,13 @@ public class Seguradora {
 				alvo.adicionarVeiculo(sinistro.getVeiculo());
 				//ALTERAR SINISTRO
 				sinistro.setCliente(alvo);
-			}
-			
+			}			
 		}
 		//NOVO CALCULO DE SEGUROS
-		System.out.println("Novo score do cliente fonte:");
-		System.out.println(fonte.calculaScore());
-		System.out.println("Novo score do cliente alvo:");
-		System.out.println(alvo.calculaScore());
+		System.out.println("Novo valor do seguro do cliente fonte:");
+		System.out.println(this.calcularPrecoSeguroCliente(fonte));
+		System.out.println("Novo valor do seguro do cliente alvo:");
+		System.out.println(this.calcularPrecoSeguroCliente(alvo));
 		
 		
 	}
