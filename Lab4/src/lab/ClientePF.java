@@ -12,13 +12,14 @@ public class ClientePF extends Cliente{
 
 	public ClientePF(String nome, String endereco, String CPF, String genero, Date dataLicenca, String educacao,
 			Date dataNascimento, String classeEconomica) {
-		super(nome, endereco);
+		super(nome, endereco);	
 		this.CPF = gerarCPF(CPF);
 		this.genero = genero;
 		this.dataLicenca = dataLicenca;
 		this.educacao = educacao;
 		this.dataNascimento = dataNascimento;
 		this.classeEconomica = classeEconomica;
+			
 	}
 
 	public String getCPF() {

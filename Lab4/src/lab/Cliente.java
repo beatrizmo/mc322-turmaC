@@ -13,7 +13,6 @@ public class Cliente {
 		this.nome = nome;
 		this.endereco = endereco;
 		this.listaVeiculos = new ArrayList<Veiculo>();
-		this.valorSeguro = calculaScore();
 	}
 	
 	//Getters e setters

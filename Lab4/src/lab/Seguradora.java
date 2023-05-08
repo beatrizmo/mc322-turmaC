@@ -121,7 +121,7 @@ public class Seguradora {
 		}
 	}
 	
-	public boolean visualisarSinistro(String cliente) {
+	public boolean visualizarSinistro(String cliente) {
 		String identificador = "";
 		int cont = 0;
 		for (Sinistro sinistroAtual : listaSinistros) {
@@ -159,12 +159,12 @@ public class Seguradora {
 	}
 	
 	public void listarSinistros() {
-		int cont = 0;
+		if (listaSinistros.size() == 0) {
+			System.out.println("Não existem Sinistros nessa seguradora!");
+			return;
+		}
 		for (Sinistro sinistroAtual : listaSinistros) {
 			System.out.println(sinistroAtual.toString());
-		}
-		if (cont == 0) {
-			System.out.println("Não existem Sinistros nessa seguradora!");
 		}
 	}
 	

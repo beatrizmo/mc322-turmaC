@@ -174,7 +174,7 @@ public class lab {
 	
 	public static void main(String[] args) {
 		Date today = new Date();
-		Date then = new Date(117, 05, 21);
+		Date then = new Date(60, 05, 21);
 		ArrayList<Seguradora> listaSeguradoras = new ArrayList<Seguradora>();
 		ArrayList<ClientePF> listaClientesPF = new ArrayList<ClientePF>();
 		ArrayList<ClientePJ> listaClientesPJ = new ArrayList<ClientePJ>();
@@ -182,7 +182,7 @@ public class lab {
 		Veiculo carro = new Veiculo("HFH2230", "Ford", "Ka", 2017);
 		Veiculo moto = new Veiculo("PUT5540", "Yamaha", "Lander 250", 2020);
 		ClientePF pessoa = new ClientePF("LUIZ INACIO LULA DA SILVA", "Rua Londres", "070.680.938-68", 
-				"masculino" , today, "Superior Completo", then, "Alta");
+				"M" , today, "Superior Completo", then, "Alta");
 		listaClientesPF.add(pessoa);	
 		ClientePJ empresa = new ClientePJ("Cereais Ltda", "Bosque Agua Branca" , 
 				"56.419.013/0001-54", then, 5);
@@ -192,29 +192,38 @@ public class lab {
 		
 		pessoa.adicionarVeiculo(carro);
 		empresa.adicionarVeiculo(moto);
-		seg.cadastrarCliente(pessoa);
-		seg.cadastrarCliente(empresa);
-		seg.gerarSinistro("20/04/2023", empresa, moto, seg);
-		seg.gerarSinistro("19/07/2022", pessoa, carro, seg);
 		
+		System.out.println("CADASTRANDO CLIENTES...");
+		if (seg.cadastrarCliente(pessoa)) {System.out.println("Cliente cadastrado!");}
+		if (seg.cadastrarCliente(empresa)) {System.out.println("Cliente cadastrado!");}	
+		System.out.println("GERANDO SINISTROS...");
+		if (seg.gerarSinistro("20/04/2023", empresa, moto, seg)) {System.out.println("Sinistro gerado!");}
+		if (seg.gerarSinistro("19/07/2022", pessoa, carro, seg)) {System.out.println("Sinistro gerado!");}
+		
+		System.out.println("LISTANDO CLIENTES...");
 		seg.listarClientes("CPF");
-		seg.visualisarSinistro("070.680.938-68");
+		seg.listarClientes("CNPJ");
+		System.out.println("VISUALIZAR SINISTROS...");
+		seg.visualizarSinistro("070.680.938-68");
+		System.out.println("LISTANDO SINISTROS...");
 		seg.listarSinistros();
+		System.out.println("CALCULANDO RECEITA...");
 		System.out.println(seg.calcularReceita());
 		
-		seg.calcularPrecoSeguroCliente(pessoa);
-		seg.calcularPrecoSeguroCliente(empresa);
+		System.out.println("CALCULANDO VALOR DO SEGUROS DOS CLIENTES...");
+		System.out.println(seg.calcularPrecoSeguroCliente(pessoa));
+		System.out.println(seg.calcularPrecoSeguroCliente(empresa));
 		
 		System.out.println("RECEITA TOTAL\n" + seg.calcularReceita());
 		
 		Scanner entrada = new Scanner(System.in);
+		Scanner entrada1 = new Scanner(System.in);
 		MenuOperacoes estado = MenuOperacoes.MENUINICIAL;
 		boolean isRunning = true;
 		while (isRunning) {
 			System.out.println(estado.getMenuOpcoes());			
 			String es = entrada.nextLine();
-			int escolha = Integer.parseInt(es);			
-			Scanner entrada1 = new Scanner(System.in);			
+			int escolha = Integer.parseInt(es);						
 			if(estado == MenuOperacoes.CADASTROS) {					
 				switch(escolha) {
 					case(1):
@@ -310,7 +319,7 @@ public class lab {
 						}						
 						for (Seguradora seguradoraAtual2 : listaSeguradoras) {
 							System.out.println("Sinistros da Seguradora "+seguradoraAtual2.getNome()+":");
-							seguradoraAtual2.visualisarSinistro(id);
+							seguradoraAtual2.visualizarSinistro(id);
 						}
 						break;
 					case(4):
@@ -424,5 +433,6 @@ public class lab {
 			}
 		}
 		entrada.close();
+		entrada1.close();
 	}
 }
