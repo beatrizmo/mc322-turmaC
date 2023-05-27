@@ -2,17 +2,18 @@ package lab;
 
 import java.util.ArrayList;
 
-public class Cliente {
+public abstract class Cliente {
 	private String nome;
+	private String telefone;
 	private String endereco;
-	private ArrayList<Veiculo> listaVeiculos;
-	private double valorSeguro;
+	private String email;
 		
 	//Constructor
-	public Cliente(String nome, String endereco) {
+	public Cliente(String nome, String telefone, String endereco, String email) {
 		this.nome = nome;
+		this.telefone = telefone;
 		this.endereco = endereco;
-		this.listaVeiculos = new ArrayList<Veiculo>();
+		this.email = email;
 	}
 	
 	//Getters e setters
@@ -31,12 +32,28 @@ public class Cliente {
 	public void setEndereco(String endereco) {
 		this.endereco = endereco;
 	}
-
-	public String toString() {
-		return ", nome=" + nome + ", endereco=" + endereco + ", listaVeiculos=" + listaVeiculos + "]";
+	
+	public String getTelefone() {
+		return telefone;
 	}
 
-	public ArrayList<Veiculo> getListaVeiculos() {
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+
+	public String toString() {
+		return "Cliente [nome=" + nome + ", telefone=" + telefone + ", endereco=" + endereco + ", email=" + email + "]";
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	/*public ArrayList<Veiculo> getListaVeiculos() {
 		return listaVeiculos;
 	}
 
@@ -52,8 +69,8 @@ public class Cliente {
 			}
 		}
 		return false;
-	}
-
+	}*/
+	/*
 	public double getValorSeguro() {
 		return valorSeguro;
 	}	
@@ -64,7 +81,9 @@ public class Cliente {
 
 	public double calculaScore() {
 		return 1;
-	};
+	}*/
+
+	
 	
 	
 }

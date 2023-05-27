@@ -3,21 +3,23 @@ package lab;
 import java.util.ArrayList;
 
 public class Seguradora {
+	private final String CNPJ;
 	private String nome;
 	private String telefone;
 	private String email;
 	private String endereco;
-	private ArrayList<Sinistro> listaSinistros;
+	private ArrayList<Seguro> listaSeguros;
 	private ArrayList<Cliente> listaClientes;
 	
 	//Construtor
-	public Seguradora(String nome, String telefone, String email, String endereco) {
+	public Seguradora(String CNPJ, String nome, String telefone, String email, String endereco) {		
+		this.CNPJ = gerarCNPJ(CNPJ);
 		this.nome = nome;
 		this.telefone = telefone;
 		this.email = email;
 		this.endereco = endereco;
 		this.listaClientes = new ArrayList<Cliente>();
-		this.listaSinistros = new ArrayList<Sinistro>();
+		this.listaSeguros = new ArrayList<Seguro>();
 	}
 
 	//Getters e setters
@@ -25,6 +27,10 @@ public class Seguradora {
 		return nome;
 	}
 	
+	public String getCNPJ() {
+		return CNPJ;
+	}
+
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
@@ -53,6 +59,14 @@ public class Seguradora {
 		this.endereco = endereco;
 	}
 	
+	private String gerarCNPJ(String CNPJ) {
+		if (Validacao.validarCNPJ(CNPJ)) {
+			return CNPJ;
+		}
+		return "CNPJ invalido";
+	}
+	
+	
 	public boolean cadastrarCliente(Cliente cliente) {
 		System.out.println("Valor do Seguro: " + this.calcularPrecoSeguroCliente(cliente));
 		return this.listaClientes.add(cliente);
@@ -65,9 +79,7 @@ public class Seguradora {
 			
 			if (clienteAtual instanceof ClientePF) {
 				ClientePF pf = (ClientePF) clienteAtual;
-				identificador = pf.getCPF();
-				
-				
+				identificador = pf.getCPF();				
 			}
 			if (clienteAtual instanceof ClientePJ) {
 				ClientePJ pj = (ClientePJ) clienteAtual;
@@ -239,7 +251,7 @@ public class Seguradora {
 	
 	public String toString() {
 		return "Seguradora [nome=" + nome + ", telefone=" + telefone + ", email=" + email + ", endereco=" + endereco
-				+ ", listaSinistros=" + listaSinistros + ", listaClientes=" + listaClientes + "]";
+				+ ", listaSinistros=" + listaSeguros + ", listaClientes=" + listaClientes + "]";
 	}
 	
 	

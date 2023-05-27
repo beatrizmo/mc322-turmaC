@@ -1,16 +1,14 @@
 package lab;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 public class SeguroPJ extends Seguro{
 	private Frota frota;
-	private ClientePJ ciente;
-	public SeguroPJ(int iD, Date dataInicio, Date dataFim, Seguradora seguradora, ArrayList<Sinistro> listaSinistros,
-			ArrayList<Condutor> listaCondutores, int valorMensal, Frota frota, ClientePJ ciente) {
-		super(iD, dataInicio, dataFim, seguradora, listaSinistros, listaCondutores, valorMensal);
+	private ClientePJ cliente;
+	public SeguroPJ(Date dataInicio, Date dataFim, Seguradora seguradora, Frota frota, ClientePJ cliente) {
+		super(dataInicio, dataFim, seguradora);
 		this.frota = frota;
-		this.ciente = ciente;
+		this.cliente = cliente;
 	}
 	public Frota getFrota() {
 		return frota;
@@ -18,11 +16,11 @@ public class SeguroPJ extends Seguro{
 	public void setFrota(Frota frota) {
 		this.frota = frota;
 	}
-	public ClientePJ getCiente() {
-		return ciente;
+	public ClientePJ getCliente() {
+		return cliente;
 	}
-	public void setCiente(ClientePJ ciente) {
-		this.ciente = ciente;
+	public void setCliente(ClientePJ cliente) {
+		this.cliente = cliente;
 	}
 	
 	@Override
@@ -34,14 +32,28 @@ public class SeguroPJ extends Seguro{
 	public boolean desautorizarCondutor() {
 		return false;
 	}
+	
+	private int getQntSinistrosPorCondutor() {
+		int soma = 0;
+		for (Condutor condutor : getListaCondutores()) {
+			soma += condutor.getSinistrosPorSeguradora(getSeguradora()).size();
+		}
+		return soma;
+	}
 
 	@Override
 	public void calcularValor() {
-
+		int ValorBase = (int) CalcSeguro.VALOR_BASE.valor();
+		int qntFunc = this.cliente.getQntFunc();
+		int qntVeiculos = this.cliente.getQntVeiculos();
+		int AnosPosFundacao = this.cliente.calcularAnoPosFund();
+		int qntSinistrosCondutor = getQntSinistrosPorCondutor();
+		int qntSinistroCliente = getListaSinistros().size();
+		int score = (ValorBase * (10 + (qntFunc)/10) * (1 + 1/(qntVeiculos + 2)) * (1 + 1/(AnosPosFundacao +2)) * (2 + qntSinistroCliente/10) * (5 + qntSinistrosCondutor/10));
+		this.setValorMensal((int)score);
 	}
-
 	@Override
-	public void gerarSinistro() {
-
-	}
+	public String toString() {
+		return "SeguroPJ:" + super.toString() + "[frota=" + frota + ", cliente=" + cliente + "]";
+	}	
 }

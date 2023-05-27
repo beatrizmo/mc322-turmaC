@@ -1,23 +1,22 @@
 package lab;
 
+import java.util.Date;
 import java.util.Random;
 
 public class Sinistro {
 	final private int id;
-	private String data;
+	private Date data;
 	private String endereco;
-	private Seguradora seguradora;
-	private Veiculo veiculo;
-	private Cliente cliente;
+	private Condutor condutor;
+	private Seguro seguro;
 	
 	//Constructor	
-	public Sinistro(String data, String endereco, Cliente cliente, Veiculo veiculo, Seguradora seguradora) {
+	public Sinistro(Date data, String endereco, Condutor condutor, Seguro seguro) {
 		this.id = gerarIdRandom();
 		this.data = data;
 		this.endereco = endereco;
-		this.cliente = cliente;
-		this.seguradora = seguradora;
-		this.veiculo = veiculo;
+		this.condutor = condutor;
+		this.seguro = seguro;
 	}
 	
 	//Getters e setters
@@ -25,11 +24,11 @@ public class Sinistro {
 		return id;
 	}
 	
-	public String getData() {
+	public Date getData() {
 		return data;
 	}
 	
-	public void setData(String data) {
+	public void setData(Date data) {
 		this.data = data;
 	}
 	
@@ -41,35 +40,27 @@ public class Sinistro {
 		this.endereco = endereco;
 	}
 	
-	public Seguradora getSeguradora() {
-		return seguradora;
+	public Seguro getSeguro() {
+		return seguro;
 	}
 
-	public void setSeguradora(Seguradora seguradora) {
-		this.seguradora = seguradora;
+	public void setSeguro(Seguro seguro) {
+		this.seguro = seguro;
 	}
 
-	public Veiculo getVeiculo() {
-		return veiculo;
+	public Condutor getCondutor() {
+		return condutor;
 	}
 
-	public void setVeiculo(Veiculo veiculo) {
-		this.veiculo = veiculo;
-	}
-
-	public Cliente getCliente() {
-		return cliente;
-	}
-
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
+	public void setCondutor(Condutor condutor) {
+		this.condutor = condutor;
 	}
 
 	public String toString() {
-		return "Sinistro [id=" + id + ", data=" + data + ", endereco=" + endereco + ", seguradora=" + seguradora.getNome()
-				+ ", veiculo=" + veiculo.getPlaca() + ", cliente=" + cliente.getNome() + "]";
+		return "Sinistro [id=" + id + ", data=" + data + ", endereco=" + endereco + ", condutor=" + condutor
+				+ ", seguro=" + seguro + "]";
 	}
-	
+
 	//Função gerar id aleatório	
 	private int gerarIdRandom() {
 		Random random =  new Random();

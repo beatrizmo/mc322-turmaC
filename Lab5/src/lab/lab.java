@@ -151,8 +151,7 @@ public class lab {
 		int s = Integer.parseInt(S);		
 		return listaClientesPJ.get(s-1);
 	}
-	
-	
+		
 	public static Veiculo obterVeiculo() {
 		Scanner entrada = new Scanner(System.in);
 		System.out.println("Digite a placa do veiculo:");

@@ -12,9 +12,7 @@ public class Condutor {
 	private Date dataNasc;
 	private ArrayList<Sinistro> listaSinistros;
 	
-	public Condutor(String cPF, String nome, String telefone, String endereco, String email, Date dataNasc,
-			ArrayList<Sinistro> listaSinistros) {
-		super();
+	public Condutor(String cPF, String nome, String telefone, String endereco, String email, Date dataNasc) {
 		CPF = cPF;
 		this.nome = nome;
 		this.telefone = telefone;
@@ -75,14 +73,27 @@ public class Condutor {
 	public ArrayList<Sinistro> getListaSinistros() {
 		return listaSinistros;
 	}
+	
+	public boolean adicionarSinistro(Sinistro sinistro) {
+		return this.listaSinistros.add(sinistro);
+	}
 
-	public void setListaSinistros(ArrayList<Sinistro> listaSinistros) {
-		this.listaSinistros = listaSinistros;
+	public ArrayList<Sinistro> getSinistrosPorSeguradora(Seguradora seguradora) {
+		ArrayList<Sinistro> sinistrosSeguradora = new ArrayList<Sinistro>();
+		for (Sinistro sinistro : listaSinistros) {
+			if (sinistro.getSeguro().getSeguradora().equals(seguradora)) {
+				sinistrosSeguradora.add(sinistro);
+			}
+		}
+		return sinistrosSeguradora;
 	}
 	
-	public void adicionarSinistro() {
-		
+	
+	public String toString() {
+		return "Condutor [CPF=" + CPF + ", nome=" + nome + ", telefone=" + telefone + ", endereco=" + endereco
+				+ ", email=" + email + ", dataNasc=" + dataNasc + ", listaSinistros=" + listaSinistros + "]";
 	}
+	
 	
 	
 	
