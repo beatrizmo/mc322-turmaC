@@ -2,7 +2,6 @@ package lab;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Scanner;
 
 public class ClientePJ extends Cliente{
 	private final String CNPJ;
@@ -49,85 +48,43 @@ public class ClientePJ extends Cliente{
 		this.dataFundacao = dataFundacao;
 	}
 	
-	public boolean cadastrarFrota() {		
-		Scanner entrada = new Scanner(System.in);
-		System.out.println("Digite o code da Frota que sera cadastrada:");
-		String code = entrada.nextLine();
-		Frota newFrota = new Frota(code);
-		System.out.println("Quantos Veiculos essa frota possui?");
-		int qnt = entrada.nextInt();
-		for (int i=0;i<qnt;i++) {
-			this.adicionarVeiculoFrota(newFrota);		
-		}
-		entrada.close();
-		return this.listaFrota.add(newFrota);
+	public boolean cadastrarFrota(Frota frota) {
+		return this.listaFrota.add(frota);
 	}
 	
-	private boolean adicionarVeiculoFrota(Frota frota) {
-		Scanner entrada = new Scanner(System.in);
-		String qa = entrada.nextLine();
-		int qntAdicionada = Integer.parseInt(qa);
-		for (int i=0; i<qntAdicionada; i++) {
-			frota.addVeiculo();
-		}
-		entrada.close();
-		return true;
-	}
-	
-	private boolean removerVeiculoFrota(Frota frota) {
-		Scanner entrada = new Scanner(System.in);
-		String qr = entrada.nextLine();
-		int qntRemovida = Integer.parseInt(qr);
-		for (int i=0; i<qntRemovida; i++) {
-			frota.removeVeiculo();
-		}
-		entrada.close();
-		return true;
-	}
-	
-	public boolean atualizarFrota() {
-		Scanner entrada = new Scanner(System.in);
-		System.out.println("Digite o code da Frota que sera atualizada:");
-		String code = entrada.nextLine();
+	public boolean atualizarFrota(String code, int escolha) {
+		Frota frota = null;
 		for (Frota frotaAtual : listaFrota) {
-			if (frotaAtual.getCode().equals(code)) {
-				entrada.close();
-				return atualizarFrota(frotaAtual);
+			if (frotaAtual.getCode() == code) {
+				frota = frotaAtual;
 			}
+		} //selecionando a frota que a operação sera feita
+		if (escolha == 3) { //remover a frota
+			return listaFrota.remove(frota);
 		}
-		entrada.close();
 		return false;
-	}			
-
+	}	
 	
-	private boolean atualizarFrota(Frota frota) {
-		System.out.println("1-Adicionar Veiculos\n 2-Remover Veiculos\n 3-Remover Frota");
-		Scanner entrada = new Scanner(System.in);
-		String es = entrada.nextLine();
-		int escolha = Integer.parseInt(es);
+	public boolean atualizarFrota(String code, int escolha, ArrayList<Veiculo> veiculos) { //passa a lista de veiculos a ser adicionada/removida
+		Frota frota = null;
+		for (Frota frotaAtual : listaFrota) {
+			if (frotaAtual.getCode() == code) {
+				frota = frotaAtual;
+			}
+		} //selecionando a frota que a operação sera feita
 		switch (escolha) {
 			case(1): //adicionar veiculo a frota 
-				System.out.println("Quantos veiculos deseja adicionar?");
-				entrada.close();
-				return adicionarVeiculoFrota(frota);			
+				for (Veiculo veiculo : veiculos) {
+					frota.addVeiculo(veiculo);
+				}
+				return true;
 			case(2): //remover veiculo da frota
-				System.out.println("Quantos veiculos deseja remover?");
-				entrada.close();
-				return removerVeiculoFrota(frota);
-			case(3): //remover frota
-				entrada.close();
-				return this.listaFrota.remove(frota);
-		}		
-		entrada.close();
+				for (Veiculo veiculo : veiculos) {
+					frota.removeVeiculo(veiculo);
+				}
+				return true;
+		}
 		return false;		
-	}
-	
-	public ArrayList<Veiculo> getVeiculosPorFrota() {
-		Scanner entrada = new Scanner(System.in);
-		System.out.println("Digite o code da Frota:");
-		String code = entrada.nextLine();		
-		entrada.close();
-		return getVeiculosPorFrota(code);
 	}
 	
 	public ArrayList<Veiculo> getVeiculosPorFrota(String code) {
@@ -140,14 +97,6 @@ public class ClientePJ extends Cliente{
 		return veiculosFrota;
 	}
 	
-	public int getQntVeiculos() {
-		int soma = 0;
-		for (Frota frota : listaFrota) {
-			soma += this.getVeiculosPorFrota(frota.getCode()).size();
-		}
-		return soma;
-	}
-	
 	public int calcularAnoPosFund() {
 	    long diferencaMillis = new Date().getTime() - this.dataFundacao.getTime();
 	    long diferencaAnos = (long) (diferencaMillis / 1000 / 60 / 60 / 24 / 365.25);
@@ -156,6 +105,6 @@ public class ClientePJ extends Cliente{
 	
 	@Override
 	public String toString() {
-		return "ClientePJ [CNPJ=" + CNPJ + ", dataFundacao=" + dataFundacao + ", listaFrota=" + listaFrota + "]";
+		return "ClientePJ" + super.toString() + " CNPJ=" + CNPJ + ", dataFundacao=" + dataFundacao + ", listaFrota=" + listaFrota + "]";
 	}	
 }

@@ -1,6 +1,7 @@
 package lab;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class SeguroPF extends Seguro{
@@ -11,6 +12,7 @@ public class SeguroPF extends Seguro{
 		super(dataInicio, dataFim, seguradora);
 		this.veiculo = veiculo;
 		this.cliente = cliente;
+		calcularValor();
 	}
 
 	public Veiculo getVeiculo() {
@@ -29,35 +31,48 @@ public class SeguroPF extends Seguro{
 		this.cliente = cliente;
 	}
 
-	@Override
-	public boolean autorizarCondutor() {
-		return true;
-	}
-
-	@Override
-	public boolean desautorizarCondutor() {
-		return false;
+	private int getQntSinistrosPorCondutor() {
+		int soma = 0;
+		for (Condutor condutor : getListaCondutores()) {
+			soma += condutor.getSinistrosPorSeguradora(getSeguradora()).size();
+		}
+		return soma;
 	}
 
 	@Override
 	public void calcularValor() {
-		int ValorBase = (int) CalcSeguro.VALOR_BASE.valor();
-		int idade = cliente.calcularIdade();
+		double ValorBase = (int) CalcSeguro.VALOR_BASE.valor();
+		double idade = cliente.calcularIdade();
 		double fatorIdade = 1;
 		if(idade >= 18 && idade <= 30 ) {fatorIdade = CalcSeguro.FATOR_18_30.valor();}
 		else if(idade >= 30 && idade <=60) {fatorIdade = CalcSeguro.FATOR_30_60.valor();}
 		else if(idade >=60 && idade <= 90) {fatorIdade = CalcSeguro.FATOR_60_90.valor();}
-		int qntVeiculos = cliente.getListaVeiculos().size();
-		int qntSinistrosCliente = 0;
-		int qntSinistrosCondutor = 0;
-		double score = (ValorBase * fatorIdade * (1 + 1/(qntVeiculos + 2)) * (2 + qntSinistrosCliente/10) * (5 + qntSinistrosCondutor/10));
-		this.setValorMensal((int)score);
+		double qntVeiculos = this.getSeguradora().getVeiculosPorCliente(this.getCliente().getCPF()).size(); //qnt de veiculos q o cliente tem assegurados na seguradora
+		double qntSinistrosCliente = this.getSeguradora().getSinistroPorCliente(this.cliente.getCPF()).size(); //qnt de sinistros q o cliente tem na seguradora
+		double qntSinistrosCondutor = getQntSinistrosPorCondutor(); //qnt de sinistros que o condutor tem na seguradora
+		double score =  ( ValorBase * fatorIdade * (1 + 1/( qntVeiculos +2) ) *
+				(2 + qntSinistrosCliente /10) *
+				(5 + qntSinistrosCondutor /10) );
+		this.setValorMensal(score);
 	}
+
 
 	@Override
 	public String toString() {
 		return "SeguroPF"+ super.toString() + "[veiculo=" + veiculo + ", cliente=" + cliente + "]";
 	}
 
-	
+	@Override
+	public void gerarSinistro(String CPF, Date data, String end) {
+		Condutor condutor = this.encontrarCondutor(CPF);
+		Sinistro sin = new Sinistro(data, end, condutor, this);
+		condutor.adicionarSinistro(sin);
+		ArrayList <Sinistro> listaNovaSinistros = this.getListaSinistros();
+		listaNovaSinistros.add(sin);
+		this.setListaSinistros(listaNovaSinistros);
+		this.calcularValor();
+	}
+
+
+
 }

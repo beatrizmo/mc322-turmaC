@@ -2,9 +2,6 @@ package lab;
 
 import java.util.Date;
 import java.util.Random;
-import java.util.Scanner;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public abstract class Seguro {
@@ -14,7 +11,7 @@ public abstract class Seguro {
 	private Seguradora seguradora;
 	private ArrayList<Sinistro> listaSinistros;
 	private ArrayList<Condutor> listaCondutores;
-	private int valorMensal;
+	private double valorMensal;
 	
 	public Seguro(Date dataInicio, Date dataFim, Seguradora seguradora) {
 		this.ID = gerarIdRandom();
@@ -65,101 +62,47 @@ public abstract class Seguro {
 		this.listaCondutores = listaCondutores;
 	}
 
-	public int getValorMensal() {
+	public double getValorMensal() {
 		return valorMensal;
 	}
 
-	public void setValorMensal(int valorMensal) {
+	public void setValorMensal(double valorMensal) {
 		this.valorMensal = valorMensal;
 	}
 	
+	public int getID() {
+		return ID;
+	}
+
 	private int gerarIdRandom() {
 		Random random =  new Random();
 		return Math.abs(random.nextInt());
 	}
 	
-	protected Condutor selecionarCondutor() {
-		Scanner entrada = new Scanner(System.in);
+	public Condutor encontrarCondutor(String condutor) {
 		for (Condutor condutorAtual : listaCondutores) {
-			int index = 1 + listaCondutores.indexOf(condutorAtual);
-			System.out.println(index + "-" + condutorAtual.getNome());
-		}		
-		String S = entrada.nextLine();
-		int s = Integer.parseInt(S);
-		entrada.close();
-		return listaCondutores.get(s-1);
+			if (condutorAtual.getCPF().equals(condutor)) {
+				return condutorAtual;
+			}
+		}
+		return null;
 	}
 	
-	protected Condutor obterCondutor() {
-		Scanner entrada = new Scanner(System.in);
-		SimpleDateFormat dateF = new SimpleDateFormat("dd/MM/yyyy");
-		System.out.println("Digite o CPF:");
-		String CPF = entrada.nextLine();
-		while (!Validacao.validarCPF(CPF)) {
-			System.out.println("CPF inválido!");
-			CPF = entrada.nextLine();
-		}
-		System.out.println("Digite o nome:");
-		String nome = entrada.nextLine();
-		while (!Validacao.validarNome(nome)) {
-			System.out.println("Nome inválido!");
-			nome = entrada.nextLine();
-		}
-		System.out.println("Digite o telefone:");
-		String tel = entrada.nextLine();		
-		System.out.println("Digite o endereco:");
-		String end = entrada.nextLine();
-		System.out.println("Digite o email:");
-		String email = entrada.nextLine();
-		System.out.println("Digite a data de nascimento:");
-		String date = entrada.nextLine();					
-		Date dataNasc = new Date();
-		try {
-			dataNasc = dateF.parse(date);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Condutor condutor = new Condutor(CPF,nome,tel,end,email,dataNasc);
-		entrada.close();
-		return condutor;
+	public boolean desautorizarCondutor(String condutor) {
+		Condutor newCondutor = encontrarCondutor(condutor);
+		return this.listaCondutores.remove(newCondutor);
 	}
 	
-	public boolean desautorizarCondutor() {
-		System.out.println("Digite o numero do Condutor que deseja desautorizar:");
-		return this.listaCondutores.remove(this.selecionarCondutor());
+	public boolean autorizarCondutor(Condutor condutor) {
+		return listaCondutores.add(condutor);		
 	}
 	
-	public boolean autorizarCondutor() {
-		return false;		
-	}
+	public abstract void calcularValor();
+			
+	public abstract void gerarSinistro(String condutor, Date data, String end);
 	
-	public void calcularValor() {};
-		
-	public boolean gerarSinistro() {
-		Scanner entrada = new Scanner(System.in);
-		SimpleDateFormat dateF = new SimpleDateFormat("dd/MM/yyyy");
-		System.out.println("Digite a data");						
-		String date = entrada.nextLine();					
-		Date data = new Date();
-		try {
-			data = dateF.parse(date);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("Digite o endereco");						
-		String end = entrada.nextLine();
-		System.out.println("Digite o numero do Condutor que deseja gerar sinistro:");
-		Condutor condutor = this.selecionarCondutor();
-		Sinistro sin = new Sinistro(data, end, condutor, this);
-		entrada.close();
-		condutor.adicionarSinistro(sin);
-		return this.listaSinistros.add(sin);
-	}
-
 	public String toString() {
-		return "[ID=" + ID + ", dataInicio=" + dataInicio + ", dataFim=" + dataFim + ", seguradora=" + seguradora
+		return "[ID=" + ID + ", dataInicio=" + dataInicio + ", dataFim=" + dataFim + ", seguradora=" + seguradora.getNome()
 				+ ", listaSinistros=" + listaSinistros + ", listaCondutores=" + listaCondutores + ", valorMensal="
 				+ valorMensal;
 	}
