@@ -27,6 +27,7 @@ public class ClientePF extends Cliente{
 	
 	private String gerarCPF(String CPF) {
 		if (Validacao.validarCPF(CPF)) {
+			CPF = CPF.replaceAll("[^0-9]", "");
 			return CPF;
 		}
 		return "CPF inválido";

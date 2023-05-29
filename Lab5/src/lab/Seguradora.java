@@ -111,7 +111,8 @@ public class Seguradora {
 					Seguro seguro = new SeguroPF(dataInicio,dataFim,this,veiculo,pf);
 					listaSeguros.add(seguro);
 					seguro.calcularValor();
-					System.out.println("Valor Mensal: "+ seguro.getValorMensal());
+					String valorFormatado = String.format("%.2f", seguro.getValorMensal());
+					System.out.println("Valor Mensal: R$"+ valorFormatado);
 					return true;
 				}
 			}
@@ -131,7 +132,8 @@ public class Seguradora {
 					Seguro seguro = new SeguroPJ(dataInicio,dataFim,this,frota,pj);
 					listaSeguros.add(seguro);
 					seguro.calcularValor();
-					System.out.println("Valor Mensal: "+seguro.getValorMensal());
+					String valorFormatado = String.format("%.2f", seguro.getValorMensal());
+					System.out.println("Valor Mensal: R$" + valorFormatado);
 					return true;
 				}
 			}
@@ -220,12 +222,9 @@ public class Seguradora {
 	public ArrayList<Veiculo> getVeiculosPorCliente(String cliente) {
 		String identificador = "";
 		ArrayList<Veiculo> veiculosCliente = new ArrayList<Veiculo>() ;
-		for (Seguro seguro : listaSeguros) {
-			
-			if (seguro instanceof SeguroPF) {
-				
+		for (Seguro seguro : listaSeguros) {			
+			if (seguro instanceof SeguroPF) {				
 				SeguroPF spf = (SeguroPF) seguro;
-				//System.out.println(spf.getCliente().getNome());
 				identificador = spf.getCliente().getCPF();
 				if (identificador.equals(cliente)) {
 					veiculosCliente.add(spf.getVeiculo());
@@ -245,6 +244,25 @@ public class Seguradora {
         veiculosCliente.addAll(segurosCliente);        
 		return veiculosCliente;
 	}
+	
+	public ArrayList<Frota> getFrotasPorCliente(String cliente) {
+		String identificador = "";
+		ArrayList<Frota> frotasCliente = new ArrayList<Frota>() ;
+		for (Seguro seguro : listaSeguros) {
+			if (seguro instanceof SeguroPJ) {
+				SeguroPJ spj = (SeguroPJ) seguro;
+				identificador = spj.getCliente().getCNPJ();
+				if (identificador.equals(cliente)) {
+					frotasCliente.add(spj.getFrota());
+				}
+			}
+		}
+		HashSet<Frota> segurosCliente = new HashSet<Frota>(frotasCliente); //removendo possiveis duplicatas de frotas       
+		frotasCliente.clear();
+        frotasCliente.addAll(segurosCliente);        
+		return frotasCliente;
+	}
+	
 	
 	public String listarClientesPorID(String tipoCliente) {
 		String listaReserva = "";

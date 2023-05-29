@@ -64,13 +64,14 @@ public class SeguroPJ extends Seguro{
 		return "SeguroPJ:" + super.toString() + ", [frota=" + frota + ", cliente=" + cliente + "]";
 	}
 	@Override
-	public void gerarSinistro(String CNPJ, Date data, String end) {
+	public boolean gerarSinistro(String CNPJ, Date data, String end) {
 		Condutor condutor = this.encontrarCondutor(CNPJ);
 		Sinistro sin = new Sinistro(data, end, condutor, this);
 		condutor.adicionarSinistro(sin);
 		ArrayList <Sinistro> listaNovaSinistros = this.getListaSinistros();
-		listaNovaSinistros.add(sin);
+		boolean gerado = listaNovaSinistros.add(sin);
 		this.setListaSinistros(listaNovaSinistros);	
 		this.calcularValor();
+		return gerado;
 	}	
 }

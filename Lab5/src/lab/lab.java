@@ -40,11 +40,12 @@ public class lab {
 			System.out.println("CPF inválido!");
 			CPF = entrada.nextLine();
 		}
+		CPF = CPF.replaceAll("[^0-9]", "");
 		System.out.println("Genero?");
 		String genero = entrada.nextLine();
 		System.out.println("Digite a educacao:");
 		String educacao = entrada.nextLine();
-		System.out.println("Digite a data de nascimento:");
+		System.out.println("Digite a data de nascimento [dd/MM/yyyy]:");
 		String date = entrada.nextLine();					
 		Date dataNascimento = new Date();
 		try {
@@ -79,10 +80,11 @@ public class lab {
 			System.out.println("CNPJ inválido!");
 			CNPJ = entrada.nextLine();
 		}
+		CNPJ = CNPJ.replaceAll("[^0-9]", "");
 		System.out.println("Digite a quantidade de funcionarios:");
 		String q = entrada.nextLine();
 		int qntFuncionarios = Integer.parseInt(q);
-		System.out.println("Digite a data de fundacao:");
+		System.out.println("Digite a data de fundacao [dd/MM/yyyy]:");
 		String date = entrada.nextLine();					
 		Date dataFundacao = new Date();
 		try {
@@ -160,25 +162,27 @@ public class lab {
 	}
 
 	public static Condutor selecionarCondutor(ArrayList<Condutor> listaCondutores) {
+		System.out.println("Selecione o condutor desejado por seu CPF:");
 		Scanner entrada = new Scanner(System.in);
 		for (Condutor condutorAtual : listaCondutores) {
 			int index = 1 + listaCondutores.indexOf(condutorAtual);
-			System.out.println(index + "-" + condutorAtual.getNome());
+			System.out.println(index + "-" + condutorAtual.getCPF());
 		}		
 		String S = entrada.nextLine();
 		int s = Integer.parseInt(S);
 		return listaCondutores.get(s-1);
 	}
 
-	public static Condutor obterCondutor(ArrayList<Condutor> listaCondutores) {
+	public static Condutor obterCondutor() {
 		Scanner entrada = new Scanner(System.in);
 		SimpleDateFormat dateF = new SimpleDateFormat("dd/MM/yyyy");
-		System.out.println("Digite o CPF:");
+		System.out.println("Digite o CPF do condutor:");
 		String CPF = entrada.nextLine();
 		while (!Validacao.validarCPF(CPF)) {
 			System.out.println("CPF inválido!");
 			CPF = entrada.nextLine();
 		}
+		CPF = CPF.replaceAll("[^0-9]", "");
 		System.out.println("Digite o nome:");
 		String nome = entrada.nextLine();
 		while (!Validacao.validarNome(nome)) {
@@ -191,7 +195,7 @@ public class lab {
 		String end = entrada.nextLine();
 		System.out.println("Digite o email:");
 		String email = entrada.nextLine();
-		System.out.println("Digite a data de nascimento:");
+		System.out.println("Digite a data de nascimento [dd/MM/yyyy]:");
 		String date = entrada.nextLine();					
 		Date dataNasc = new Date();
 		try {
@@ -201,7 +205,6 @@ public class lab {
 			e.printStackTrace();
 		}
 		Condutor condutor = new Condutor(CPF,nome,tel,end,email,dataNasc);
-		listaCondutores.add(condutor);
 		return condutor;
 	}
 
@@ -220,6 +223,7 @@ public class lab {
 	}
 
 	public static Seguro selecionarSeguro(ArrayList<Seguro> listaSeguros) {
+		System.out.println("Selecione o seguro desejado por sua ID:");
 		Scanner entrada = new Scanner(System.in);
 		for (Seguro seguroAtual : listaSeguros) {
 			int index = 1 + listaSeguros.indexOf(seguroAtual);
@@ -235,7 +239,7 @@ public class lab {
 		System.out.println("Digite o numero do Veiculo que fara a operacao:");
 		for (Veiculo veiculoAtual : listaVeiculos) {
 			int index = 1 + listaVeiculos.indexOf(veiculoAtual);
-			System.out.println(index + "-" +veiculoAtual.getPlaca());
+			System.out.println(index + "- Placa: " +veiculoAtual.getPlaca());
 		}
 		String S = entrada.nextLine();
 		int s = Integer.parseInt(S);		
@@ -244,7 +248,7 @@ public class lab {
 	
 	public static Frota selecionarFrota(ArrayList<Frota> listaFrota) {
 		Scanner entrada = new Scanner(System.in);
-		System.out.println("Digite o numero do Veiculo que fara a operacao:");
+		System.out.println("Digite o code da Frota que fara a operacao:");
 		for (Frota frotaAtual : listaFrota) {
 			int index = 1 + listaFrota.indexOf(frotaAtual);
 			System.out.println(index + "-" +frotaAtual.getCode());
@@ -275,8 +279,8 @@ public class lab {
 		listaClientesPJ.add(empresa);
 		Seguradora seg1 = new Seguradora("90.400.888/0001-42","Bradesco", "38465678", "v12345@dac.unicamp.br", "Germano Casellatto");
 		listaSeguradoras.add(seg1);
-		Seguradora seg2 = new Seguradora("92.754.738/0001-62","", "Allianz", "qualquerum@gmail.com", "Roxo Moreira");
-		listaSeguradoras.add(seg2);
+		//Seguradora seg2 = new Seguradora("92.754.738/0001-62","", "Allianz", "qualquerum@gmail.com", "Roxo Moreira");
+		//listaSeguradoras.add(seg2);
 		Condutor cond1 = new Condutor("070.680.938-68", "LUIZ INACIO LULA DA SILVA","38421910", "Rua Londres", "b166623@gmail.com", then);
 		listaCondutor.add(cond1);
 		Condutor cond2 = new Condutor("453.178.287-91", "Bolsonaro","6666-6666", "SLA", "bolsonaro@gmail.com", then);
@@ -380,6 +384,7 @@ public class lab {
 				System.out.println(seg1.getSinistroPorCliente(pessoa.getCPF()));
 				System.out.println("Receita Total: "+seg1.calcularReceita());
 				if (seguro.desautorizarCondutor(cond1.getCPF())) {System.out.println("Condutor desautorizado!");}
+				seguro.autorizarCondutor(cond1);
 			}
 		}
 		System.out.println(seg1.getSinistroPorCliente(pessoa.getCPF()));
@@ -428,13 +433,12 @@ public class lab {
 						System.out.println("CPF/CNPJ inválido!");
 						id = entrada1.nextLine();
 					}
-					if (Validacao.validarCPF(id)) {
-						for (ClientePF clienteAtual : listaClientesPF) {
-							if(clienteAtual.getCPF().equals(id)) {
-								clienteAtual.cadastrarVeiculo(veiculo);
-								System.out.println("Veiculo adicionado!");
-								break;
-							}
+					id = id.replaceAll("[^0-9]", "");
+					for (ClientePF clienteAtual : listaClientesPF) {
+						if(clienteAtual.getCPF().equals(id)) {
+							clienteAtual.cadastrarVeiculo(veiculo);
+							System.out.println("Veiculo adicionado!");
+							break;
 						}
 					}	
 					break;
@@ -467,6 +471,7 @@ public class lab {
 						System.out.println("CNPJ inválido!");
 						id1 = entrada1.nextLine();
 					}
+					id1 = id1.replaceAll("[^0-9]", "");
 					for (ClientePJ clienteAtual : listaClientesPJ) {
 						if(clienteAtual.getCNPJ().equals(id1)) {
 							clienteAtual.cadastrarFrota(frota1);
@@ -485,14 +490,14 @@ public class lab {
 				case(1):
 					//LISTAR CLIENTES POR SEGURADORA
 					Seguradora seguradoraAtual = selecionarSeguradora(listaSeguradoras);						
-					seguradoraAtual.listarClientes("CPF");
-					seguradoraAtual.listarClientes("CNPJ");		
+					System.out.println(seguradoraAtual.listarClientes("CPF"));
+					System.out.println(seguradoraAtual.listarClientes("CNPJ"));		
 					break;						
 				case(2):
 					//LISTAR SEGUROS POR SEG						
 					Seguradora seguradoraAtual1 = selecionarSeguradora(listaSeguradoras);
 					System.out.println(seguradoraAtual1.getListaSeguros());		
-				break;
+					break;
 				case(3):
 					//LISTAR SINISTROS POR CLIENTE
 					System.out.println("Digite o CPF/CNPJ do cliente a qual se deseja listar os sinistros:");
@@ -500,7 +505,8 @@ public class lab {
 					while (!Validacao.validarCNPJ(id) && !Validacao.validarCPF(id)) {
 						System.out.println("CPF/CNPJ inválido!");
 						id = entrada1.nextLine();
-					}						
+					}					
+					id = id.replaceAll("[^0-9]", "");
 					for (Seguradora seguradoraAtual2 : listaSeguradoras) {
 						System.out.println("Sinistros da Seguradora "+seguradoraAtual2.getNome()+":");
 						System.out.println(seguradoraAtual2.getSinistroPorCliente(id));
@@ -508,26 +514,29 @@ public class lab {
 					break;
 				case(4):
 					//LISTAR VEICULO POR CLIENTE PF
-					System.out.println("Digite o CPF/CNPJ do cliente a qual os veiculos serao listados:");
+					System.out.println("Digite o CPF do cliente a qual os veiculos serao listados:");
 					String id1 = entrada1.nextLine();						
 					while (!Validacao.validarCPF(id1)) {
-						System.out.println("CPF/CNPJ inválido!");
+						System.out.println("CPF inválido!");
 						id1 = entrada1.nextLine();
 					}
+					id1 = id1.replaceAll("[^0-9]", "");
 					for (ClientePF clienteAtual : listaClientesPF) {
 						if(clienteAtual.getCPF().equals(id1)) {
 							System.out.println(clienteAtual.getListaVeiculos());
 							break;
 						}
 					}
+					break;
 				case(5):
 					//LISTAR FROTA POR PJ
 					System.out.println("Digite o CPF/CNPJ do cliente a qual as frotas serao listadas:");
 					String id12 = entrada1.nextLine();						
 					while (!Validacao.validarCNPJ(id12)) {
 						System.out.println("CPF/CNPJ inválido!");
-						id1 = entrada1.nextLine();
+						id12 = entrada1.nextLine();
 					}
+					id12 = id12.replaceAll("[^0-9]", "");
 					for (ClientePJ clienteAtual : listaClientesPJ) {
 						if(clienteAtual.getCNPJ().equals(id12)) {
 							System.out.println(clienteAtual.getListaFrota());
@@ -542,9 +551,10 @@ public class lab {
 					while (!Validacao.validarCNPJ(id11) && !Validacao.validarCPF(id11)) {
 						System.out.println("CPF/CNPJ inválido!");
 						id11 = entrada1.nextLine();
-					}						
+					}			
+					id11 = id11.replaceAll("[^0-9]", "");
 					for (Seguradora seguradoraAtual3 : listaSeguradoras) {
-						System.out.println("Sinistros da Seguradora "+seguradoraAtual3.getNome()+":");
+						System.out.println("Seguros da Seguradora "+seguradoraAtual3.getNome()+":");
 						System.out.println(seguradoraAtual3.getSegurosPorCliente(id11));
 					}
 					break;
@@ -564,18 +574,20 @@ public class lab {
 						System.out.println("CPF/CNPJ inválido!");
 						ID = entrada1.nextLine();
 					}
-					seguradoraAtual.removerCliente(ID);
+					ID = ID.replaceAll("[^0-9]", "");
+					if (seguradoraAtual.removerCliente(ID)) {System.out.println("Cliente removido!");}
 					break;
 				case(2):
 					//EXCLUIR SEGURO					
 					Seguradora seguradoraAtual2 = selecionarSeguradora(listaSeguradoras);						
-					System.out.println("Escreva CPF/CNPJ do cliente cujo sinistro deve ser removido:");
+					System.out.println("Escreva CPF/CNPJ do cliente cujo seguro deve ser removido:");
 					String ID1 = entrada1.nextLine();
 					while (!Validacao.validarCNPJ(ID1) && !Validacao.validarCPF(ID1)) {
 						System.out.println("CPF/CNPJ inválido!");
-						ID = entrada1.nextLine();
+						ID1 = entrada1.nextLine();
 					}
-					seguradoraAtual2.cancelarSeguro(ID1);
+					ID1 = ID1.replaceAll("[^0-9]", "");
+					if (seguradoraAtual2.cancelarSeguro(ID1)) {System.out.println("Seguro cancelado!");}
 					break;
 				case(3):
 					estado = MenuOperacoes.MENUINICIAL;
@@ -596,11 +608,18 @@ public class lab {
 					case(4):
 						//GERAR SINISTRO	
 						Seguradora seguradoraAtual = selecionarSeguradora(listaSeguradoras);
+						if (seguradoraAtual.getListaSeguros().size() == 0) {
+							System.out.println("Erro! Seguradora não possui seguros!");
+							break;
+						}
 						Seguro seguro = selecionarSeguro(seguradoraAtual.getListaSeguros());
-						System.out.println("Digite o CPF do condutor:");
-						String cond3 = entrada1.nextLine();
+						if (seguro.getListaCondutores().size() == 0) {
+							System.out.println("Erro! Seguro não possui condutores!");
+							break;
+						}
+						Condutor condutor = selecionarCondutor(seguro.getListaCondutores());
 						SimpleDateFormat dateF = new SimpleDateFormat("dd/MM/yyyy");
-						System.out.println("Digite a data:");
+						System.out.println("Digite a data [dd/MM/yyyy]:");
 						String date = entrada.nextLine();					
 						Date data = new Date();
 						try {
@@ -611,12 +630,13 @@ public class lab {
 						}
 						System.out.println("Digite o endereco:");
 						String end = entrada1.nextLine();
-						seguro.gerarSinistro(cond3, data, end);
+						if(seguro.gerarSinistro(condutor.getCPF(), data, end)) {System.out.println("Sinistro gerado!");}
 						break;
 					case(5):
 						//GERAR SEGURO
+						Seguradora seguradoraAtual1 = selecionarSeguradora(listaSeguradoras);
 						SimpleDateFormat dateF1 = new SimpleDateFormat("dd/MM/yyyy");
-						System.out.println("Digite a data de inicio:");
+						System.out.println("Digite a data de inicio [dd/MM/yyyy]:");
 						String date1 = entrada.nextLine();					
 						Date dataInicio = new Date();
 						try {
@@ -625,7 +645,7 @@ public class lab {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						System.out.println("Digite a data de fim:");
+						System.out.println("Digite a data de fim [dd/MM/yyyy]:");
 						date1 = entrada.nextLine();					
 						Date dataFim = new Date();
 						try {
@@ -633,26 +653,50 @@ public class lab {
 						} catch (ParseException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
+						}						
+						System.out.println("Digite o CPF/CNPJ do cliente:");
+						String ID = entrada1.nextLine();
+						while (!Validacao.validarCNPJ(ID) && !Validacao.validarCPF(ID)) {
+							System.out.println("CPF/CNPJ inválido!");
+							ID = entrada1.nextLine();
 						}
-						Seguradora seguradoraAtual1 = selecionarSeguradora(listaSeguradoras);
-						Cliente c = selecionarCliente(listaClientesPJ, listaClientesPF, "gerar seguro");
-						if (c instanceof ClientePJ) {
-							ClientePJ cj = (ClientePJ) c;
-							Frota newFrota = selecionarFrota(cj.getListaFrota());
-							seguradoraAtual1.gerarSeguro(cj.getCNPJ(),dataInicio,dataFim,newFrota);
-							System.out.println("Seguro gerado");
+						ID = ID.replaceAll("[^0-9]", "");
+						if (Validacao.validarCNPJ(ID)) {
+							ArrayList<Frota> listaFrotas = seguradoraAtual1.getFrotasPorCliente(ID);
+							Frota newFrota = selecionarFrota(listaFrotas);
+							if(seguradoraAtual1.gerarSeguro(ID,dataInicio,dataFim,newFrota)) {System.out.println("Seguro gerado!");}
 						}
-						if (c instanceof ClientePF) {
-							ClientePF cf = (ClientePF) c;
-							Veiculo newVeiculo = selecionarVeiculo(cf.getListaVeiculos());
-							seguradoraAtual1.gerarSeguro(cf.getCPF(),dataInicio,dataFim,newVeiculo);
-							System.out.println("Seguro gerado");
+						if (Validacao.validarCPF(ID)) {
+							ArrayList<Veiculo> listaVeiculos = seguradoraAtual1.getVeiculosPorCliente(ID);
+							Veiculo newVeiculo = selecionarVeiculo(listaVeiculos);
+							if(seguradoraAtual1.gerarSeguro(ID,dataInicio,dataFim,newVeiculo)) {System.out.println("Seguro gerado!");}
 						}				
 						break;
 					case(6):
 						//CALCULAR RECEITA
 						Seguradora seguradoraAtual2 = selecionarSeguradora(listaSeguradoras);
-						System.out.println(seguradoraAtual2.calcularReceita());
+						String valorFormatado = String.format("%.2f", seguradoraAtual2.calcularReceita());
+						System.out.println("Receita Total: R$" + valorFormatado);
+						break;
+					case(7):
+						//AUTORIZAR CONDUTOR
+						Seguradora seguradoraAtual3 = selecionarSeguradora(listaSeguradoras);
+						Seguro seguroAtual = selecionarSeguro(seguradoraAtual3.getListaSeguros());
+						Condutor condutor1 = obterCondutor();
+						if(seguroAtual.autorizarCondutor(condutor1)) {System.out.println("Condutor autorizado!");}
+						break;
+					case(8):
+						//DESAUTORIZAR CONDUTOR
+						Seguradora seguradoraAtual4 = selecionarSeguradora(listaSeguradoras);
+						Seguro seguroAtual1 = selecionarSeguro(seguradoraAtual4.getListaSeguros());
+						System.out.println("Digite o CPF do condutor:");
+						String cond5 = entrada1.nextLine();
+						while (!Validacao.validarCPF(cond5)) {
+							System.out.println("CPF inválido!");
+							cond5 = entrada1.nextLine();
+						}
+						cond5 = cond5.replaceAll("[^0-9]", "");
+						if(seguroAtual1.desautorizarCondutor(cond5)) {System.out.println("Condutor desautorizado!");}
 						break;
 					case(0):
 						isRunning = false;

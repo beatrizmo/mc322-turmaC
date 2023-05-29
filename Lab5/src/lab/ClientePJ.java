@@ -35,6 +35,7 @@ public class ClientePJ extends Cliente{
 
 	private String gerarCNPJ(String CNPJ) {
 		if (Validacao.validarCNPJ(CNPJ)) {
+			CNPJ = CNPJ.replaceAll("[^0-9]", "");
 			return CNPJ;
 		}
 		return "CNPJ invalido";

@@ -99,12 +99,13 @@ public abstract class Seguro {
 	
 	public abstract void calcularValor();
 			
-	public abstract void gerarSinistro(String condutor, Date data, String end);
+	public abstract boolean gerarSinistro(String condutor, Date data, String end);
 	
 	public String toString() {
+		String valor = String.format("%.2f", valorMensal);
 		return "[ID=" + ID + ", dataInicio=" + dataInicio + ", dataFim=" + dataFim + ", seguradora=" + seguradora.getNome()
-				+ ", listaSinistros=" + listaSinistros + ", listaCondutores=" + listaCondutores + ", valorMensal="
-				+ valorMensal;
+				+ ", listaSinistros=" + listaSinistros + ", listaCondutores=" + listaCondutores + ", valorMensal= R$"
+				+ valor;
 	}
 	
 }

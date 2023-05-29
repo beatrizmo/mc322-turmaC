@@ -63,14 +63,15 @@ public class SeguroPF extends Seguro{
 	}
 
 	@Override
-	public void gerarSinistro(String CPF, Date data, String end) {
+	public boolean gerarSinistro(String CPF, Date data, String end) {
 		Condutor condutor = this.encontrarCondutor(CPF);
 		Sinistro sin = new Sinistro(data, end, condutor, this);
 		condutor.adicionarSinistro(sin);
 		ArrayList <Sinistro> listaNovaSinistros = this.getListaSinistros();
-		listaNovaSinistros.add(sin);
+		boolean gerado = listaNovaSinistros.add(sin);
 		this.setListaSinistros(listaNovaSinistros);
 		this.calcularValor();
+		return gerado;
 	}
 
 

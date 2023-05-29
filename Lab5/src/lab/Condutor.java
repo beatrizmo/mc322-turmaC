@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Condutor {
-	private String CPF;
+	private final String CPF;
 	private String nome;
 	private String telefone;
 	private String endereco;
@@ -12,8 +12,8 @@ public class Condutor {
 	private Date dataNasc;
 	private ArrayList<Sinistro> listaSinistros;
 	
-	public Condutor(String cPF, String nome, String telefone, String endereco, String email, Date dataNasc) {
-		CPF = cPF;
+	public Condutor(String CPF, String nome, String telefone, String endereco, String email, Date dataNasc) {
+		this.CPF = gerarCPF(CPF);;
 		this.nome = nome;
 		this.telefone = telefone;
 		this.endereco = endereco;
@@ -25,9 +25,13 @@ public class Condutor {
 	public String getCPF() {
 		return CPF;
 	}
-
-	public void setCPF(String cPF) {
-		CPF = cPF;
+	
+	private String gerarCPF(String CPF) {
+		if (Validacao.validarCPF(CPF)) {
+			CPF = CPF.replaceAll("[^0-9]", "");
+			return CPF;
+		}
+		return "CPF inválido";
 	}
 
 	public String getNome() {
