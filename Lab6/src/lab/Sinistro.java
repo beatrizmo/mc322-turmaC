@@ -1,17 +1,17 @@
 package lab;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Random;
 
 public class Sinistro {
 	final private int id;
-	private Date data;
+	private LocalDate data;
 	private String endereco;
 	private Condutor condutor;
 	private Seguro seguro;
 	
 	//Constructor	
-	public Sinistro(Date data, String endereco, Condutor condutor, Seguro seguro) {
+	public Sinistro(LocalDate data, String endereco, Condutor condutor, Seguro seguro) {
 		this.id = gerarIdRandom();
 		this.data = data;
 		this.endereco = endereco;
@@ -24,11 +24,11 @@ public class Sinistro {
 		return id;
 	}
 	
-	public Date getData() {
+	public LocalDate getData() {
 		return data;
 	}
 	
-	public void setData(Date data) {
+	public void setData(LocalDate data) {
 		this.data = data;
 	}
 	

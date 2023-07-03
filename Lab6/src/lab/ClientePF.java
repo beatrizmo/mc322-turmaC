@@ -1,17 +1,18 @@
 package lab;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class ClientePF extends Cliente{
 	private final String CPF;
 	private String genero;
 	private String educacao;	
-	private Date dataNascimento;
+	private LocalDate dataNascimento;
 	private ArrayList<Veiculo> listaVeiculos;
 
 	public ClientePF(String nome, String telefone, String endereco, String email, String CPF, String genero,  String educacao,
-			Date dataNascimento) {
+			LocalDate dataNascimento) {
 		super(nome, telefone, endereco, email);	
 		this.CPF = gerarCPF(CPF);
 		this.genero = genero;
@@ -33,11 +34,11 @@ public class ClientePF extends Cliente{
 		return "CPF inválido";
 	}	
 
-	public Date getDataNascimento() {
+	public LocalDate getDataNascimento() {
 		return dataNascimento;
 	}
 	
-	public void setDataNascimento(Date dataNascimento) {
+	public void setDataNascimento(LocalDate dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 
@@ -62,15 +63,16 @@ public class ClientePF extends Cliente{
 	}
 	
 	public int calcularIdade() {
-	    long diferencaMillis = new Date().getTime() - this.dataNascimento.getTime();
-	    long diferencaAnos = (long) (diferencaMillis / 1000 / 60 / 60 / 24 / 365.25);
-	    return (int) diferencaAnos;
+		LocalDate dataAtual = LocalDate.now();
+		Period periodo = Period.between(this.dataNascimento, dataAtual);
+	    int idade = periodo.getYears();
+	    return (int) idade;
 	}
 
 	
 	@Override
 	public String toString() {
-		return "ClientePF" + super.toString() + " CPF=" + CPF + ", genero=" + genero + ", educacao=" + educacao + ", dataNascimento="
+		return "ClientePF" + super.toString() + ", CPF=" + CPF + ", genero=" + genero + ", educacao=" + educacao + ", dataNascimento="
 				+ dataNascimento + ", listaVeiculos=" + listaVeiculos + "]";
 	}
 	

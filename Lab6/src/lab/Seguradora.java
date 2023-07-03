@@ -1,7 +1,9 @@
 package lab;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 
 public class Seguradora {
@@ -12,6 +14,13 @@ public class Seguradora {
 	private String endereco;
 	private ArrayList<Seguro> listaSeguros;
 	private ArrayList<Cliente> listaClientes;
+	private ArquivoClientePF arquivoClientePF;
+	private ArquivoClientePJ arquivoClientePJ;
+	private ArquivoVeiculo arquivoVeiculo;
+	private ArquivoFrota arquivoFrota;
+	private ArquivoCondutor arquivoCondutor;
+	private ArquivoSeguro arquivoSeguro;
+	private ArquivoSinistro arquivoSinistro;
 
 	//Construtor
 	public Seguradora(String CNPJ, String nome, String telefone, String email, String endereco) {		
@@ -22,6 +31,13 @@ public class Seguradora {
 		this.endereco = endereco;
 		this.listaClientes = new ArrayList<Cliente>();
 		this.listaSeguros = new ArrayList<Seguro>();
+		this.arquivoVeiculo = new ArquivoVeiculo();
+		this.arquivoClientePF = new ArquivoClientePF();
+		this.arquivoClientePJ = new ArquivoClientePJ();
+		this.arquivoFrota = new ArquivoFrota();
+		this.arquivoCondutor = new ArquivoCondutor();
+		this.arquivoSeguro = new ArquivoSeguro();
+		this.arquivoSinistro = new ArquivoSinistro();
 	}
 
 	//Getters e setters
@@ -98,7 +114,6 @@ public class Seguradora {
 		return null;
 	}
 	
-	
 	public boolean removerCliente(String cliente) {
 		Cliente clienteAtual = getClientePorID(cliente);
 		if (clienteAtual == null) {
@@ -113,7 +128,7 @@ public class Seguradora {
 		
 	}
 
-	public boolean gerarSeguro(String cliente, Date dataInicio, Date dataFim, Veiculo veiculo) {	
+	public boolean gerarSeguro(String cliente, LocalDate dataInicio, LocalDate dataFim, Veiculo veiculo) {	
 		String identificador = "";
 		for (Cliente clienteAtual : listaClientes) {			
 			if (clienteAtual instanceof ClientePF) {
@@ -125,6 +140,7 @@ public class Seguradora {
 					seguro.calcularValor();
 					String valorFormatado = String.format("%.2f", seguro.getValorMensal());
 					System.out.println("Valor Mensal: R$"+ valorFormatado);
+					gravarDados(seguro);
 					return true;
 				}
 			}
@@ -134,7 +150,7 @@ public class Seguradora {
 		return false;
 	}
 
-	public boolean gerarSeguro(String cliente, Date dataInicio, Date dataFim, Frota frota) {
+	public boolean gerarSeguro(String cliente, LocalDate dataInicio, LocalDate dataFim, Frota frota) {
 		String identificador = "";
 		for (Cliente clienteAtual : listaClientes) {			
 			if (clienteAtual instanceof ClientePJ) {
@@ -146,6 +162,7 @@ public class Seguradora {
 					seguro.calcularValor();
 					String valorFormatado = String.format("%.2f", seguro.getValorMensal());
 					System.out.println("Valor Mensal: R$" + valorFormatado);
+					gravarDados(seguro);
 					return true;
 				}
 			}
@@ -275,7 +292,6 @@ public class Seguradora {
 		return frotasCliente;
 	}
 	
-	
 	public String listarClientesPorID(String tipoCliente) {
 		String listaReserva = "";
 		for (Cliente clienteAtual : listaClientes) {			
@@ -293,6 +309,150 @@ public class Seguradora {
 		return listaReserva;
 	}
 
+	public void gravarDados(Seguro seguro) {
+		ArrayList<String> listaSinistros = seguro.getIDsSinistros();
+		ArrayList<String> listaCondutores = seguro.getCPFCondutores();
+		String valor = String.format("%.2f",seguro.getValorMensal());
+		
+		String conteudo = (seguro.getID() + "," + seguro.getDataInicio() + "," + seguro.getDataFim() + "," + seguro.getSeguradora().getNome() + ","
+                + String.join(";", listaSinistros) + "," + String.join(";", listaCondutores) + "," + valor);
+		try {
+			arquivoSeguro.gravarArquivo(conteudo);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println(conteudo);
+		
+	}
+	
+	public void gravarDados(Sinistro sinistro) {
+		DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String dataFormatada = sinistro.getData().format(formato);
+        
+		String conteudo = (sinistro.getID() + "," + dataFormatada + "," + sinistro.getEndereco() + "," + 
+                sinistro.getCondutor().getCPF() + "," + sinistro.getSeguro().getID());
+		try {
+			arquivoSinistro.gravarArquivo(conteudo);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public ArrayList<Veiculo> lerVeiculo(ArrayList<Veiculo> listaVeiculos) throws NumberFormatException, IOException {
+		for (String veiculo : arquivoVeiculo.lerArquivo()) {
+			String[] campos = veiculo.split(",");
+            String placa = campos[0].trim();
+            String marca = campos[1].trim();
+            String modelo = campos[2].trim();
+            int anoFabr = Integer.parseInt(campos[3].trim());
+            Veiculo veiculoNovo = new Veiculo(placa,marca,modelo,anoFabr);
+            listaVeiculos.add(veiculoNovo);           
+		}
+		return listaVeiculos;
+	}
+	
+	public ArrayList<Frota> lerFrota(ArrayList<Frota> listaFrota, ArrayList<Veiculo> listaVeiculos) throws NumberFormatException, IOException {
+		for (String frota : arquivoFrota.lerArquivo()) {
+			String[] campos = frota.split(",");
+            String code = campos[0].trim();
+            String placa1 = campos[1].trim();
+            String placa2 = campos[2].trim();
+            String placa3 = campos[3].trim();
+            Frota frotaNova = new Frota(code);
+            for (Veiculo veiculo : listaVeiculos) {
+            	if (veiculo.getPlaca().equals(placa1) || veiculo.getPlaca().equals(placa2) 
+            			|| veiculo.getPlaca().equals(placa3)) {
+            		frotaNova.addVeiculo(veiculo);
+            	}
+            }
+            listaFrota.add(frotaNova);    
+		}
+		return listaFrota;
+	}
+	
+	public ArrayList<ClientePF> lerClientePF(ArrayList<ClientePF> listaClientesPF, ArrayList<Veiculo> listaVeiculos) throws IOException {
+		for (String clientePF : arquivoClientePF.lerArquivo()) {
+			String[] campos = clientePF.split(",");
+            String CPF = campos[0].trim();
+            String nome = campos[1].trim();
+            String telefone = campos[2].trim();
+            String endereco = campos[3].trim();
+            String email = campos[4].trim();
+            String genero = campos[5].trim();
+            String educacao = campos[6].trim();
+            String date = campos[7].trim();
+            String placa = campos[8].trim();
+            //formatando a data
+            LocalDate dataNasc = LocalDate.parse(date);	
+            ClientePF clientePFNovo = new ClientePF(nome, telefone, endereco, email, CPF, genero, educacao, dataNasc);
+            for (Veiculo veiculo : listaVeiculos) {
+            	if (veiculo.getPlaca().equals(placa)) {
+            		clientePFNovo.cadastrarVeiculo(veiculo);
+            	}
+            }
+            listaClientesPF.add(clientePFNovo);
+		}
+		return listaClientesPF;
+	}
+	
+	public ArrayList<Condutor> lerCondutor(ArrayList<Condutor> listaCondutores) throws IOException {
+		for (String condutor : arquivoCondutor.lerArquivo()) {
+			String[] campos = condutor.split(",");
+            String CPF = campos[0].trim();
+            String nome = campos[1].trim();
+            String telefone = campos[2].trim();
+            String endereco = campos[3].trim();
+            String email = campos[4].trim();
+            String date = campos[5].trim();
+            //formatando a data
+            LocalDate dataNasc = LocalDate.parse(date);   		
+            Condutor condutorNovo = new Condutor(CPF,nome,telefone,endereco,email,dataNasc);
+            listaCondutores.add(condutorNovo);
+		}
+		return listaCondutores;
+	}
+	
+	public ArrayList<ClientePJ> lerClientePJ(ArrayList<ClientePJ> listaClientesPJ, ArrayList<Frota> listaFrota) throws IOException {
+		for (String clientePJ : arquivoClientePJ.lerArquivo()) {
+			String[] campos = clientePJ.split(",");
+            String CNPJ = campos[0].trim();
+            String nome = campos[1].trim();
+            String telefone = campos[2].trim();
+            String endereco = campos[3].trim();
+            String email = campos[4].trim();
+            String date = campos[5].trim();
+            String code = campos[6].trim();
+            //formatando a data
+            LocalDate dataFund = LocalDate.parse(date);   		
+            ClientePJ clientePJNovo = new ClientePJ(nome, telefone, endereco, email, CNPJ, 20, dataFund);
+            for (Frota frota : listaFrota) {
+            	if (frota.getCode().equals(code)) {
+            		clientePJNovo.cadastrarFrota(frota);
+            	}
+            }
+            listaClientesPJ.add(clientePJNovo);
+		}
+		return listaClientesPJ;
+	}
+	
+	public void lerDados() throws IOException {
+		ArrayList<Veiculo> listaVeiculos = new ArrayList<>();	
+		ArrayList<Frota> listaFrota = new ArrayList<>();
+		ArrayList<Condutor> listaCondutores = new ArrayList<>();
+		ArrayList<ClientePF> listaClientesPF = new ArrayList<>();
+		ArrayList<ClientePJ> listaClientesPJ = new ArrayList<>();
+		
+		//ler e instanciar veiculos
+		listaVeiculos = lerVeiculo(listaVeiculos);
+		//ler e instanciar frotas
+		listaFrota = lerFrota(listaFrota, listaVeiculos);
+		//ler e instanciar clientesPF
+		listaClientesPF = lerClientePF(listaClientesPF, listaVeiculos);
+		//ler e instanciar condutor
+		listaCondutores = lerCondutor(listaCondutores);		
+		//ler e instanciar clientesPJ
+		listaClientesPJ = lerClientePJ(listaClientesPJ, listaFrota);
+	}
 	
 	
 	public String toString() {

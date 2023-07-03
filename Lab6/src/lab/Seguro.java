@@ -1,19 +1,19 @@
 package lab;
 
-import java.util.Date;
 import java.util.Random;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public abstract class Seguro {
 	private final int ID;
-	private Date dataInicio;
-	private Date dataFim;
+	private LocalDate dataInicio;
+	private LocalDate dataFim;
 	private Seguradora seguradora;
 	private ArrayList<Sinistro> listaSinistros;
 	private ArrayList<Condutor> listaCondutores;
 	private double valorMensal;
 	
-	public Seguro(Date dataInicio, Date dataFim, Seguradora seguradora) {
+	public Seguro(LocalDate dataInicio, LocalDate dataFim, Seguradora seguradora) {
 		this.ID = gerarIdRandom();
 		this.dataInicio = dataInicio;
 		this.dataFim = dataFim;
@@ -22,19 +22,19 @@ public abstract class Seguro {
 		this.listaCondutores = new ArrayList<Condutor>();
 	}
 
-	public Date getDataInicio() {
+	public LocalDate getDataInicio() {
 		return dataInicio;
 	}
 
-	public void setDataInicio(Date dataInicio) {
+	public void setDataInicio(LocalDate dataInicio) {
 		this.dataInicio = dataInicio;
 	}
 
-	public Date getDataFim() {
+	public LocalDate getDataFim() {
 		return dataFim;
 	}
 
-	public void setDataFim(Date dataFim) {
+	public void setDataFim(LocalDate dataFim) {
 		this.dataFim = dataFim;
 	}
 
@@ -97,15 +97,31 @@ public abstract class Seguro {
 		return listaCondutores.add(condutor);		
 	}
 	
+	public ArrayList<String> getIDsSinistros() {
+		ArrayList<String> IDs = new ArrayList<>();
+		for (Sinistro sinistro : listaSinistros) {
+			IDs.add(sinistro.getID()+"");
+		}
+		return IDs;
+	}
+	
 	public abstract void calcularValor();
 			
-	public abstract boolean gerarSinistro(String condutor, Date data, String end);
+	public abstract boolean gerarSinistro(String condutor, LocalDate data, String end);
 	
 	public String toString() {
 		String valor = String.format("%.2f", valorMensal);
 		return "[ID=" + ID + ", dataInicio=" + dataInicio + ", dataFim=" + dataFim + ", seguradora=" + seguradora.getNome()
 				+ ", listaSinistros=" + listaSinistros + ", listaCondutores=" + listaCondutores + ", valorMensal= R$"
 				+ valor;
+	}
+
+	public ArrayList<String> getCPFCondutores() {
+		ArrayList<String> CPFs = new ArrayList<>();
+		for (Condutor condutor : listaCondutores) {
+			CPFs.add(condutor.getCPF());
+		}
+		return CPFs;
 	}
 	
 }

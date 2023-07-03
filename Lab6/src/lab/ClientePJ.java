@@ -1,15 +1,16 @@
 package lab;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class ClientePJ extends Cliente{
 	private final String CNPJ;
 	private int qntFunc;
-	private Date dataFundacao;
+	private LocalDate dataFundacao;
 	private ArrayList<Frota> listaFrota;
 	
-	public ClientePJ(String nome, String telefone, String endereco, String email, String CNPJ, int qntFunc, Date dataFundacao) {
+	public ClientePJ(String nome, String telefone, String endereco, String email, String CNPJ, int qntFunc, LocalDate dataFundacao) {
 		super(nome,telefone, endereco,email);
 		this.CNPJ = gerarCNPJ(CNPJ);
 		this.qntFunc = qntFunc;
@@ -41,11 +42,11 @@ public class ClientePJ extends Cliente{
 		return "CNPJ invalido";
 	}
 
-	public Date getDataFundacao() {
+	public LocalDate getDataFundacao() {
 		return dataFundacao;
 	}
 
-	public void setDataFundacao(Date dataFundacao) {
+	public void setDataFundacao(LocalDate dataFundacao) {
 		this.dataFundacao = dataFundacao;
 	}
 	
@@ -99,9 +100,10 @@ public class ClientePJ extends Cliente{
 	}
 	
 	public int calcularAnoPosFund() {
-	    long diferencaMillis = new Date().getTime() - this.dataFundacao.getTime();
-	    long diferencaAnos = (long) (diferencaMillis / 1000 / 60 / 60 / 24 / 365.25);
-	    return (int) diferencaAnos;
+		LocalDate dataAtual = LocalDate.now();
+		Period periodo = Period.between(this.dataFundacao, dataAtual);
+	    int idade = periodo.getYears();
+	    return (int) idade;
 	}
 	
 	@Override

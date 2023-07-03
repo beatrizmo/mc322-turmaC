@@ -1,12 +1,12 @@
 package lab;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class SeguroPJ extends Seguro{
 	private Frota frota;
 	private ClientePJ cliente;
-	public SeguroPJ(Date dataInicio, Date dataFim, Seguradora seguradora, Frota frota, ClientePJ cliente) {
+	public SeguroPJ(LocalDate dataInicio, LocalDate dataFim, Seguradora seguradora, Frota frota, ClientePJ cliente) {
 		super(dataInicio, dataFim, seguradora);
 		this.frota = frota;
 		this.cliente = cliente;
@@ -64,7 +64,7 @@ public class SeguroPJ extends Seguro{
 		return "SeguroPJ:" + super.toString() + ", [frota=" + frota + ", cliente=" + cliente + "]";
 	}
 	@Override
-	public boolean gerarSinistro(String CNPJ, Date data, String end) {
+	public boolean gerarSinistro(String CNPJ, LocalDate data, String end) {
 		Condutor condutor = this.encontrarCondutor(CNPJ);
 		Sinistro sin = new Sinistro(data, end, condutor, this);
 		condutor.adicionarSinistro(sin);
@@ -72,6 +72,8 @@ public class SeguroPJ extends Seguro{
 		boolean gerado = listaNovaSinistros.add(sin);
 		this.setListaSinistros(listaNovaSinistros);	
 		this.calcularValor();
+		this.getSeguradora().gravarDados(sin);
+		this.getSeguradora().gravarDados(this);
 		return gerado;
 	}	
 }

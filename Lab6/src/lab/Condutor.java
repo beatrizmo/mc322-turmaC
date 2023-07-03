@@ -1,7 +1,7 @@
 package lab;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Condutor {
 	private final String CPF;
@@ -9,10 +9,10 @@ public class Condutor {
 	private String telefone;
 	private String endereco;
 	private String email;
-	private Date dataNasc;
+	private LocalDate dataNasc;
 	private ArrayList<Sinistro> listaSinistros;
 	
-	public Condutor(String CPF, String nome, String telefone, String endereco, String email, Date dataNasc) {
+	public Condutor(String CPF, String nome, String telefone, String endereco, String email, LocalDate dataNasc) {
 		this.CPF = gerarCPF(CPF);;
 		this.nome = nome;
 		this.telefone = telefone;
@@ -66,11 +66,11 @@ public class Condutor {
 		this.email = email;
 	}
 
-	public Date getDataNasc() {
+	public LocalDate getDataNasc() {
 		return dataNasc;
 	}
 
-	public void setDataNasc(Date dataNasc) {
+	public void setDataNasc(LocalDate dataNasc) {
 		this.dataNasc = dataNasc;
 	}
 

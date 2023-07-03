@@ -1,14 +1,13 @@
 package lab;
 
-
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class SeguroPF extends Seguro{
 	private Veiculo veiculo;
 	private ClientePF cliente;
 
-	public SeguroPF(Date dataInicio, Date dataFim, Seguradora seguradora, Veiculo veiculo, ClientePF cliente) {
+	public SeguroPF(LocalDate dataInicio, LocalDate dataFim, Seguradora seguradora, Veiculo veiculo, ClientePF cliente) {
 		super(dataInicio, dataFim, seguradora);
 		this.veiculo = veiculo;
 		this.cliente = cliente;
@@ -53,6 +52,7 @@ public class SeguroPF extends Seguro{
 		double score =  ( ValorBase * fatorIdade * (1 + 1/( qntVeiculos +2) ) *
 				(2 + qntSinistrosCliente /10) *
 				(5 + qntSinistrosCondutor /10) );
+
 		this.setValorMensal(score);
 	}
 
@@ -63,7 +63,7 @@ public class SeguroPF extends Seguro{
 	}
 
 	@Override
-	public boolean gerarSinistro(String CPF, Date data, String end) {
+	public boolean gerarSinistro(String CPF, LocalDate data, String end) {
 		Condutor condutor = this.encontrarCondutor(CPF);
 		Sinistro sin = new Sinistro(data, end, condutor, this);
 		condutor.adicionarSinistro(sin);
@@ -71,6 +71,8 @@ public class SeguroPF extends Seguro{
 		boolean gerado = listaNovaSinistros.add(sin);
 		this.setListaSinistros(listaNovaSinistros);
 		this.calcularValor();
+		this.getSeguradora().gravarDados(sin);
+		this.getSeguradora().gravarDados(this);
 		return gerado;
 	}
 

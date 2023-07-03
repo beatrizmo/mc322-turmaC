@@ -1,9 +1,8 @@
 package lab;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Scanner;
-import java.text.SimpleDateFormat;
-import java.text.ParseException;
+import java.time.LocalDate;
+import java.io.IOException;
 
 public class lab {	
 	//funções para o menu de operacoes
@@ -19,7 +18,6 @@ public class lab {
 	}
 
 	public static ClientePF obterClientePF(Scanner entrada,ArrayList<ClientePF> listaClientesPF) {
-		SimpleDateFormat dateF = new SimpleDateFormat("dd/MM/yyyy");
 		System.out.println("Digite o nome:");
 		String nome = entrada.nextLine();
 		while (!Validacao.validarNome(nome)) {
@@ -43,21 +41,15 @@ public class lab {
 		String genero = entrada.nextLine();
 		System.out.println("Digite a educacao:");
 		String educacao = entrada.nextLine();
-		System.out.println("Digite a data de nascimento [dd/MM/yyyy]:");
+		System.out.println("Digite a data de nascimento [yyyy/MM/dd]:");
 		String date = entrada.nextLine();					
-		Date dataNascimento = new Date();
-		try {
-			dataNascimento = dateF.parse(date);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		LocalDate dataNascimento = LocalDate.parse(date);
 		ClientePF newCliente = new ClientePF(nome,tel,end,email,CPF,genero,educacao, dataNascimento);
 		listaClientesPF.add(newCliente);
 		return newCliente;
 	}
 
 	public static ClientePJ obterClientePJ(Scanner entrada,ArrayList<ClientePJ> listaClientesPJ) {
-		SimpleDateFormat dateF = new SimpleDateFormat("dd/MM/yyyy");
 		System.out.println("Digite o nome:");
 		String nome = entrada.nextLine();
 		while (!Validacao.validarNome(nome)) {
@@ -80,14 +72,9 @@ public class lab {
 		System.out.println("Digite a quantidade de funcionarios:");
 		String q = entrada.nextLine();
 		int qntFuncionarios = Integer.parseInt(q);
-		System.out.println("Digite a data de fundacao [dd/MM/yyyy]:");
+		System.out.println("Digite a data de fundacao [yyyy/MM/dd]:");
 		String date = entrada.nextLine();					
-		Date dataFundacao = new Date();
-		try {
-			dataFundacao = dateF.parse(date);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		LocalDate dataFundacao = LocalDate.parse(date);
 		ClientePJ newCliente = new ClientePJ(nome,tel,end,email,CNPJ,qntFuncionarios,dataFundacao);
 		listaClientesPJ.add(newCliente);
 		return newCliente;
@@ -164,7 +151,6 @@ public class lab {
 	}
 
 	public static Condutor obterCondutor(Scanner entrada) {
-		SimpleDateFormat dateF = new SimpleDateFormat("dd/MM/yyyy");
 		System.out.println("Digite o CPF do condutor:");
 		String CPF = entrada.nextLine();
 		while (!Validacao.validarCPF(CPF)) {
@@ -184,14 +170,9 @@ public class lab {
 		String end = entrada.nextLine();
 		System.out.println("Digite o email:");
 		String email = entrada.nextLine();
-		System.out.println("Digite a data de nascimento [dd/MM/yyyy]:");
-		String date = entrada.nextLine();					
-		Date dataNasc = new Date();
-		try {
-			dataNasc = dateF.parse(date);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		System.out.println("Digite a data de nascimento [yyyy/MM/dd]:");
+		String date = entrada.nextLine();
+		LocalDate dataNasc = LocalDate.parse(date);
 		Condutor condutor = new Condutor(CPF,nome,tel,end,email,dataNasc);
 		return condutor;
 	}
@@ -472,15 +453,9 @@ public class lab {
 					break;
 				}
 				Condutor condutor = selecionarCondutor(entrada1,seguro.getListaCondutores());
-				SimpleDateFormat dateF = new SimpleDateFormat("dd/MM/yyyy");
-				System.out.println("Digite a data [dd/MM/yyyy]:");
+				System.out.println("Digite a data [yyyy/MM/dd]:");
 				String date = entrada.nextLine();					
-				Date data = new Date();
-				try {
-					data = dateF.parse(date);
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
+				LocalDate data = LocalDate.parse(date);
 				System.out.println("Digite o endereco:");
 				String end = entrada1.nextLine();
 				if(seguro.gerarSinistro(condutor.getCPF(), data, end)) {System.out.println("Sinistro gerado!");}
@@ -488,23 +463,12 @@ public class lab {
 				case(5):
 					//GERAR SEGURO
 					Seguradora seguradoraAtual1 = selecionarSeguradora(entrada1,listaSeguradoras);
-				SimpleDateFormat dateF1 = new SimpleDateFormat("dd/MM/yyyy");
-				System.out.println("Digite a data de inicio [dd/MM/yyyy]:");
-				String date1 = entrada.nextLine();					
-				Date dataInicio = new Date();
-				try {
-					dataInicio = dateF1.parse(date1);
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-				System.out.println("Digite a data de fim [dd/MM/yyyy]:");
+				System.out.println("Digite a data de inicio [yyyy/MM/dd]:");
+				String date1 = entrada.nextLine();	
+				LocalDate dataInicio = LocalDate.parse(date1);
+				System.out.println("Digite a data de fim [yyyy/MM/dd]:");
 				date1 = entrada.nextLine();					
-				Date dataFim = new Date();
-				try {
-					dataFim = dateF1.parse(date1);
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}						
+				LocalDate dataFim = LocalDate.parse(date1);						
 				System.out.println("Digite o CPF/CNPJ do cliente:");
 				String ID = entrada1.nextLine();
 				while (!Validacao.validarCNPJ(ID) && !Validacao.validarCPF(ID)) {
@@ -565,9 +529,8 @@ public class lab {
 
 
 	public static void main(String[] args) {
-		Date today = new Date();
-		@SuppressWarnings("deprecation")
-		Date then = new Date(60, 05, 21);
+		LocalDate today = LocalDate.now();
+		LocalDate then = LocalDate.of(1969, 12, 03);
 		ArrayList<Seguradora> listaSeguradoras = new ArrayList<Seguradora>();
 		ArrayList<ClientePF> listaClientesPF = new ArrayList<ClientePF>();
 		ArrayList<ClientePJ> listaClientesPJ = new ArrayList<ClientePJ>();
@@ -635,7 +598,8 @@ public class lab {
 
 		System.out.println("----#----#-----#-----");		
 		System.out.println("CALCULAR RECEITA...");
-		System.out.println("Receita Total: "+seg1.calcularReceita());
+		String valor = String.format("%.2f",seg1.calcularReceita());
+		System.out.println("Receita Total: "+ valor);
 
 		System.out.println("----#----#-----#-----");		
 		System.out.println("CANCELAR SEGURO...");
@@ -653,18 +617,21 @@ public class lab {
 		listaAdicionar.add(carro);
 		if (empresa.atualizarFrota("12rde", 1, listaAdicionar)) {
 			System.out.println("Adicionado um veiculo!" + empresa.getVeiculosPorFrota("12rde"));		
-			System.out.println("Receita Total: "+seg1.calcularReceita());
+			String valor1 = String.format("%.2f",seg1.calcularReceita());
+			System.out.println("Receita Total: "+ valor1);
 		}
 		ArrayList<Veiculo> listaRemover = new ArrayList<Veiculo>();
 		listaRemover.add(carro);
 		if (empresa.atualizarFrota("12rde", 2, listaRemover)) {
 			System.out.println("Removido um veiculo!" + empresa.getVeiculosPorFrota("12rde"));		
-			System.out.println("Receita Total: "+seg1.calcularReceita());
+			String valor1 = String.format("%.2f",seg1.calcularReceita());
+			System.out.println("Receita Total: "+ valor1);
 		}
 		if (empresa.atualizarFrota("12rde", 3)) {
 			System.out.println("Frota Removida!");
 			seg1.cancelarSeguro(empresa.getCNPJ());
-			System.out.println("Receita Total: "+seg1.calcularReceita());
+			String valor1 = String.format("%.2f",seg1.calcularReceita());
+			System.out.println("Receita Total: "+ valor1);
 		}
 		System.out.println("----#----#-----#-----");		
 		System.out.println("RESETANDO A SEGURADORA...");
@@ -672,7 +639,8 @@ public class lab {
 		empresa.cadastrarFrota(frota);
 		seg1.cadastrarCliente(pessoa); seg1.cadastrarCliente(empresa); //voltando ao começo para gerar sisnistro
 		seg1.gerarSeguro(empresa.getCNPJ(),then,today,frota); seg1.gerarSeguro(pessoa.getCPF(),then,today,carro); 
-		System.out.println("Receita Total: "+seg1.calcularReceita());
+		String valor1 = String.format("%.2f",seg1.calcularReceita());
+		System.out.println("Receita Total: "+ valor1);
 
 		System.out.println("----#----#-----#-----");		
 		System.out.println("GERANDO SINISTRO...");
@@ -683,20 +651,30 @@ public class lab {
 			}
 		}
 		System.out.println(seg1.getSinistroPorCliente(empresa.getCNPJ()));
-		System.out.println("Receita Total: "+seg1.calcularReceita());
+		String valor11 = String.format("%.2f",seg1.calcularReceita());
+		System.out.println("Receita Total: "+ valor11);
 		for (Seguro seguro : seg1.getSegurosPorCliente(pessoa.getCPF())) {
+			seg1.gravarDados(seguro);
 			if(seguro.autorizarCondutor(cond1)) {
 				System.out.println("Condutor autorizado!");
 				seguro.gerarSinistro(cond1.getCPF(), then, cond1.getEndereco());
 				System.out.println(seg1.getSinistroPorCliente(pessoa.getCPF()));
-				System.out.println("Receita Total: "+seg1.calcularReceita());
+				String valor111 = String.format("%.2f",seg1.calcularReceita());
+				System.out.println("Receita Total: "+ valor111);
 				if (seguro.desautorizarCondutor(cond1.getCPF())) {System.out.println("Condutor desautorizado!");}
 				seguro.autorizarCondutor(cond1);
 			}
 		}
 		System.out.println(seg1.getSinistroPorCliente(pessoa.getCPF()));
-		System.out.println("Receita Total: "+seg1.calcularReceita());
-
+		String valor111 = String.format("%.2f",seg1.calcularReceita());
+		System.out.println("Receita Total: "+ valor111);
+		try {
+			seg1.lerDados();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+		
 		menuIterativo(listaSeguradoras, listaClientesPF, listaClientesPJ, listaCondutor,listaVeiculo);
 
 
