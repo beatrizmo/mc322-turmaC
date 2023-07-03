@@ -315,13 +315,12 @@ public class Seguradora {
 		String valor = String.format("%.2f",seguro.getValorMensal());
 		
 		String conteudo = (seguro.getID() + "," + seguro.getDataInicio() + "," + seguro.getDataFim() + "," + seguro.getSeguradora().getNome() + ","
-                + String.join(";", listaSinistros) + "," + String.join(";", listaCondutores) + "," + valor);
+                + String.join(",", listaSinistros) + "," + String.join(",", listaCondutores) + "," + valor);
 		try {
 			arquivoSeguro.gravarArquivo(conteudo);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println(conteudo);
 		
 	}
 	
