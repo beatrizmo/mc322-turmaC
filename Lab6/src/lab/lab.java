@@ -41,7 +41,7 @@ public class lab {
 		String genero = entrada.nextLine();
 		System.out.println("Digite a educacao:");
 		String educacao = entrada.nextLine();
-		System.out.println("Digite a data de nascimento [yyyy/MM/dd]:");
+		System.out.println("Digite a data de nascimento [yyyy-MM-dd]:");
 		String date = entrada.nextLine();					
 		LocalDate dataNascimento = LocalDate.parse(date);
 		ClientePF newCliente = new ClientePF(nome,tel,end,email,CPF,genero,educacao, dataNascimento);
@@ -72,7 +72,7 @@ public class lab {
 		System.out.println("Digite a quantidade de funcionarios:");
 		String q = entrada.nextLine();
 		int qntFuncionarios = Integer.parseInt(q);
-		System.out.println("Digite a data de fundacao [yyyy/MM/dd]:");
+		System.out.println("Digite a data de fundacao [yyyy-MM-dd]:");
 		String date = entrada.nextLine();					
 		LocalDate dataFundacao = LocalDate.parse(date);
 		ClientePJ newCliente = new ClientePJ(nome,tel,end,email,CNPJ,qntFuncionarios,dataFundacao);
@@ -170,7 +170,7 @@ public class lab {
 		String end = entrada.nextLine();
 		System.out.println("Digite o email:");
 		String email = entrada.nextLine();
-		System.out.println("Digite a data de nascimento [yyyy/MM/dd]:");
+		System.out.println("Digite a data de nascimento [yyyy-MM-dd]:");
 		String date = entrada.nextLine();
 		LocalDate dataNasc = LocalDate.parse(date);
 		Condutor condutor = new Condutor(CPF,nome,tel,end,email,dataNasc);
@@ -453,7 +453,7 @@ public class lab {
 					break;
 				}
 				Condutor condutor = selecionarCondutor(entrada1,seguro.getListaCondutores());
-				System.out.println("Digite a data [yyyy/MM/dd]:");
+				System.out.println("Digite a data [yyyy-MM-dd]:");
 				String date = entrada.nextLine();					
 				LocalDate data = LocalDate.parse(date);
 				System.out.println("Digite o endereco:");
@@ -463,10 +463,10 @@ public class lab {
 				case(5):
 					//GERAR SEGURO
 					Seguradora seguradoraAtual1 = selecionarSeguradora(entrada1,listaSeguradoras);
-				System.out.println("Digite a data de inicio [yyyy/MM/dd]:");
+				System.out.println("Digite a data de inicio [yyyy-MM-dd]:");
 				String date1 = entrada.nextLine();	
 				LocalDate dataInicio = LocalDate.parse(date1);
-				System.out.println("Digite a data de fim [yyyy/MM/dd]:");
+				System.out.println("Digite a data de fim [yyyy-MM-dd]:");
 				date1 = entrada.nextLine();					
 				LocalDate dataFim = LocalDate.parse(date1);						
 				System.out.println("Digite o CPF/CNPJ do cliente:");
